@@ -1,0 +1,93 @@
+{
+  "expo": {
+    "name": "XSMB",
+    "slug": "xskt",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "bms",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+
+    "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTablet": true,
+      "bundleIdentifier": "vn.sonfe.xskt",
+
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": ["remote-notification"],
+
+        "NSLocationWhenInUseUsageDescription": "Ứng dụng cần quyền truy cập vị trí của bạn để hiển thị thông tin thời tiết và dịch vụ phù hợp tại khu vực sinh sống.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Ứng dụng cần quyền truy cập vị trí ngay cả khi chạy nền để cung cấp dịch vụ, thông báo và tiện ích cho cư dân.",
+        "NSLocationAlwaysUsageDescription": "Ứng dụng cần quyền truy cập vị trí của bạn để cung cấp đầy đủ các chức năng liên quan đến khu dân cư.",
+
+        "NSPhotoLibraryUsageDescription": "Ứng dụng cần quyền truy cập ảnh để bạn đính kèm và tải lên hình ảnh khi gửi ý kiến và phản ánh cư dân.",
+        "NSPhotoLibraryAddUsageDescription": "Ứng dụng cần quyền lưu ảnh để tải ảnh và tài liệu về thiết bị của bạn.",
+
+        "NSCameraUsageDescription": "Ứng dụng cần dùng camera để chụp ảnh khi phản ánh sự cố hoặc cập nhật thông tin cá nhân.",
+        "NSMicrophoneUsageDescription": "Ứng dụng cần quyền truy cập micro nếu bạn cần ghi âm khi gửi phản ánh.",
+
+        "NSFaceIDUsageDescription": "Cho phép ứng dụng sử dụng Face ID/Touch ID để đăng nhập nhanh và an toàn hơn."
+      },
+
+      "entitlements": {
+        "aps-environment": "production"
+      }
+    },
+
+    "android": {
+      "versionCode": 3,
+      "googleServicesFile": "./google-services.json",
+      "icon": "./assets/images/icon.png",
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "vn.sonfe.xskt",
+      "permissions": ["android.permission.RECORD_AUDIO"]
+    },
+
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+
+    "plugins": [
+      "@react-native-firebase/app",
+
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static",
+            "buildReactNativeFromSource": true
+          }
+        }
+      ],
+
+      "expo-router",
+
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": { "backgroundColor": "#000000" }
+        }
+      ]
+    ],
+
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ba18f15b-4f4f-4f08-85b1-fb133214a29c"
+      }
+    }
+  }
+}

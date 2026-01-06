@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "266424628082",
+    "project_id": "xskt-86248",
+    "storage_bucket": "xskt-86248.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266424628082:android:f853fee6dd185a4f1723eb",
+        "android_client_info": {
+          "package_name": "vn.sonfe.xskt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBddQ2MdHW_X8YcSZ6dSfUmvF_Yf2W2Efw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
