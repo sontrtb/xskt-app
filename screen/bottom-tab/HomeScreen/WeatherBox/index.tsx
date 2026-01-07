@@ -4,19 +4,16 @@ import TextUi from '@/components/ui/TextUi';
 import { useTheme } from '@/stores/useTheme';
 import { PADDING_PAGE } from '@/theme/layout';
 import Constants from 'expo-constants';
-import { GlassView } from 'expo-glass-effect';
 import { ImageBackground } from 'expo-image';
 import moment from 'moment';
 import 'moment/locale/vi';
 import { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
 const statusBarHeight = Constants.statusBarHeight;
 const windowWidth = Dimensions.get('window').width;
 
 moment.locale('vi');
-
-
 
 function WeatherBox() {
     const { theme } = useTheme()
@@ -49,18 +46,17 @@ function WeatherBox() {
                 objectFit: "contain"
             }}
         >
-            <GlassView
+            <View
                 style={[
                     styles.weatherCard,
                 ]}
-                glassEffectStyle="clear"
             >
                 <Row>
                     <TextUi allowFontScaling={false} style={[styles.textTime, { color: isDark ? "#000" : "#fff" }]}>{currentTime}</TextUi>
                     <TextUi allowFontScaling={false} style={[styles.textDate, { color: isDark ? "#000" : "#fff" }]}>{currentDate}</TextUi>
                 </Row>
                 <SpaceUi height={12} />
-            </GlassView>
+            </View>
         </ImageBackground>
     )
 }

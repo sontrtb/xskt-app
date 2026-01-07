@@ -1,6 +1,5 @@
 import { PADDING_PAGE } from '@/theme/layout';
 import Feather from '@expo/vector-icons/Feather';
-import { GlassView } from 'expo-glass-effect';
 import { Image, ImageBackground } from 'expo-image';
 import { ReactElement } from 'react';
 import { StyleSheet, View } from "react-native";
@@ -35,10 +34,10 @@ function AuthLayout({ children, backAction, heightHeaderSubtraction = 0 }: AuthL
                 {
                     backAction &&
                     <TouchableOpacityUi style={styles.backBtnWrap} onPress={backAction}>
-                        <GlassView style={styles.backBtn} glassEffectStyle="clear">
+                        <View style={styles.backBtn}>
                             <Feather name="arrow-left" size={28} color="#fff" />
                             <TextUi style={styles.textBack} weight="bold">Quay lại</TextUi>
-                        </GlassView>
+                        </View>
                     </TouchableOpacityUi>
                 }
                 <View style={[styles.logoWrap, { top: heightBgTmp - 254 }]}>

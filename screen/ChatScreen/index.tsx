@@ -1,15 +1,42 @@
 import useColor from "@/hooks/useColor";
-import { IChatIem } from "@/types/chat";
+import { EStatusChat, IChatIem } from "@/types/chat";
 import { useState } from "react";
 import { FlatList, Platform, StyleSheet } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import InputMessage from "./InputMessage";
 import ItemChat from "./ItemChat";
 
+const initChats: IChatIem[] = [
+  {
+    id: 1,
+    send: "user",
+    content: "Hello bot!",
+    status: EStatusChat.success
+  },
+  {
+    id: 2,
+    send: "bot",
+    content: "Chào bạn 👋, mình có thể giúp gì?",
+    status: EStatusChat.success
+  },
+  {
+    id: 3,
+    send: "user",
+    content: "Đợi xíu nha...",
+    status: EStatusChat.pending
+  },
+  {
+    id: 4,
+    send: "bot",
+    content: "Mình đang suy nghĩ câu trả lời...",
+    status: EStatusChat.thinking
+  }
+];
+
 function ChatScreen() {
     const color = useColor()
 
-    const [chatList, setChatList] = useState<IChatIem[]>([])
+    const [chatList, setChatList] = useState<IChatIem[]>(initChats)
 
     return (
         <KeyboardAvoidingView 
@@ -23,9 +50,12 @@ function ChatScreen() {
                 keyExtractor={item => item.id.toString()}
                 contentContainerStyle={styles.flatListContent}
                 style={styles.flatList}
-                inverted={chatList.length > 0} // Đảo ngược list để tin nhắn mới ở dưới
+                inverted={chatList.length > 0}
             />
-            <InputMessage />
+
+            <InputMessage
+                setChatList={setChatList}
+            />
         </KeyboardAvoidingView>
     )
 }

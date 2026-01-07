@@ -6,7 +6,6 @@ import TextInputUi from "@/components/ui/TextInputUi";
 import TextUi from "@/components/ui/TextUi";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import useTheme from "@/hooks/useColor";
-import useLoginHandle from "@/hooks/useLoginHandle";
 import { toastError } from "@/lib/toast";
 import { useBiometric } from "@/stores/useBiometric";
 import { PADDING_PAGE } from "@/theme/layout";
@@ -24,8 +23,6 @@ function LoginScreen() {
     const color = useTheme()
 
     const router = useRouter()
-
-    const onLoginSuccess = useLoginHandle()
 
     const { enabelBiometric, setEnabelBiometric } = useBiometric()
 
@@ -45,7 +42,7 @@ function LoginScreen() {
     const loginMuatation = useMutation({
         mutationFn: login,
         onSuccess: (res) => {
-            onLoginSuccess(res.data)
+            // onLoginSuccess(res.data)
         },
         onError: (err) => {
             console.log(err)
