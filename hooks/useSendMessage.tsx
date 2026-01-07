@@ -1,9 +1,10 @@
 
 import { EStatusChat, IChatIem } from "@/types/chat";
-import { useRef, useState } from "react";
-
+import { useState } from "react";
+import EventSource from 'react-native-sse';
 interface IUseSendMessageProps {
     onDoneTyping?: (mess: IChatIem) => void;
+    onError?: () => void;
     onTyping?: (mess: IChatIem) => void;
 }
 
@@ -22,107 +23,91 @@ export interface IMessageGetProps {
 }
 
 const useSendMessage = (props: IUseSendMessageProps) => {
-    const { onDoneTyping, onTyping } = props
+    const { onDoneTyping, onTyping, onError } = props;
 
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
-    const readerRef = useRef<ReadableStreamDefaultReader<Uint8Array>>(undefined)
+    const sendMessage = async (messageSend: string) => {
+        setIsLoading(true);
 
-    const handleMessageChunk = (reader?: ReadableStreamDefaultReader<Uint8Array<ArrayBufferLike>>) => {
-        readerRef.current = reader;
-        const decoder = new TextDecoder();
-        let textMessTmp = "";
-        let incompleteData = "";
+        const url = `${process.env.EXPO_PUBLIC_API_BASE_URL}/dream-book`;
 
         const id = new Date().getTime();
+        let textMessTmp = "";
 
-        function readStream() {
-            reader?.read().then(({ done, value }) => {
-                if (done) {
-                    const newMess: IChatIem = {
-                        id: id,
-                        content: textMessTmp,
+        const es = new EventSource(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                question: messageSend
+            }),
+        });
+
+        es.addEventListener("message", (event: any) => {
+            if (!event?.data) return;
+
+            try {
+                const parsed: IChunk = JSON.parse(event.data);
+
+                // thinking stage
+                if (parsed.thinking) {
+                    onTyping?.({
+                        id,
                         send: "bot",
-                        status: EStatusChat.success
-                    };
-                    onDoneTyping?.(newMess)
+                        content: "",
+                        status: EStatusChat.thinking
+                    });
                     return;
                 }
 
-                const chunk = decoder.decode(value, { stream: true });
-                incompleteData += chunk;
+                // pending stream chunks
+                if (parsed.status === "pending") {
+                    textMessTmp += parsed.content;
 
-                // Xử lý các JSON đầy đủ trong incompleteData
-                const lines = incompleteData.split("\n");
-                incompleteData = lines.pop() || ""; // Lấy phần chưa hoàn chỉnh lưu lại
+                    onTyping?.({
+                        id,
+                        send: "bot",
+                        content: textMessTmp,
+                        status: EStatusChat.pending
+                    });
+                    return;
+                }
 
-                lines.forEach((line) => {
-                    if (!line.startsWith('data:')) return;
+                // success - finish
+                if (parsed.status === "success") {
+                    onDoneTyping?.({
+                        id,
+                        send: "bot",
+                        content: textMessTmp,
+                        status: EStatusChat.success
+                    });
+                    setIsLoading(false)
+                    es.close();
+                }
 
-                    const jsonPart = line.startsWith('data: ') ? line.substring(6).trim() : line.substring(5).trim();
-                    const parsed: IChunk = JSON.parse(jsonPart)
+            } catch (e) {
+                console.log("parse error", e);
+            }
+        });
 
-                    if (parsed.thinking) {
-                        onTyping?.({
-                            id: id,
-                            send: "bot",
-                            content: "",
-                            status: EStatusChat.thinking
-                        })
-                    } else if(parsed.status === "pending") {
-                        textMessTmp += parsed.content;
-                        onTyping?.({
-                            id: id,
-                            send: "bot",
-                            content: textMessTmp,
-                            status: EStatusChat.pending
-                        })
-                    } else if(parsed.status === "success") {
-                        onTyping?.({
-                            id: id,
-                            send: "bot",
-                            content: textMessTmp,
-                            status: EStatusChat.success
-                        })
-                    }
-                });
+        es.addEventListener("error", (err: any) => {
+            console.log("SSE error", err);
+            onError?.()
+            es.close();
+            setIsLoading(false);
+        });
 
-                readStream();
-            });
-        }
-
-        readStream();
-    }
-
-    const sendMessage = async (messageSend: string) => {
-        setIsLoading(true)
-        const url = `${process.env.EXPO_PUBLIC_API_BASE_URL}/dream-book`
-
-        const headers: { [key: string]: string } = {
-            responseType: "stream",
-        };
-
-        fetch(url, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify({ question: messageSend }),
-        })
-            .then(async (response) => response.body?.getReader())
-            .then((reader) => {
-                handleMessageChunk(reader);
-            })
-            .catch((error) => {
-                console.error("Error sending POST request:", error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        es.addEventListener("open", () => {
+        });
     };
 
     return {
         sendMessage,
         isLoading
-    }
+    };
 };
+
 
 export default useSendMessage

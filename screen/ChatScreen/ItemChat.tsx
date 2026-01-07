@@ -6,8 +6,6 @@ import { EStatusChat, IChatIem } from "@/types/chat";
 import { StyleSheet, View } from "react-native";
 
 
-
-
 function ItemChat({item}: {item: IChatIem}) {
     const color = useColor()
 

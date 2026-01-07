@@ -9,68 +9,57 @@ import ItemChat from "./ItemChat";
 const initChats: IChatIem[] = [
   {
     id: 1,
-    send: "user",
-    content: "Hello bot!",
+    send: "bot",
+    content: "Chào bạn 👋, mình là bot AI giải mã giấc mơ. Bạn hãy cho biết bạn mơ thấy gì để mình giải mã nhé !!!",
     status: EStatusChat.success
   },
-  {
-    id: 2,
-    send: "bot",
-    content: "Chào bạn 👋, mình có thể giúp gì?",
-    status: EStatusChat.success
-  },
-  {
-    id: 3,
-    send: "user",
-    content: "Đợi xíu nha...",
-    status: EStatusChat.pending
-  },
-  {
-    id: 4,
-    send: "bot",
-    content: "Mình đang suy nghĩ câu trả lời...",
-    status: EStatusChat.thinking
-  }
 ];
 
 function ChatScreen() {
-    const color = useColor()
+  const color = useColor()
 
-    const [chatList, setChatList] = useState<IChatIem[]>(initChats)
+  const [chatList, setChatList] = useState<IChatIem[]>(initChats)
 
-    return (
-        <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={[styles.root, {backgroundColor: color.bg}]}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}
-        >
-            <FlatList
-                data={chatList}
-                renderItem={({ item }) => <ItemChat item={item} />}
-                keyExtractor={item => item.id.toString()}
-                contentContainerStyle={styles.flatListContent}
-                style={styles.flatList}
-                inverted={chatList.length > 0}
-            />
+  const [pendingChatItem, setPendingChatItem] = useState<IChatIem>()
 
-            <InputMessage
-                setChatList={setChatList}
-            />
-        </KeyboardAvoidingView>
-    )
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={[styles.root, { backgroundColor: color.bg }]}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}
+    >
+      <FlatList
+        data={chatList}
+        renderItem={({ item }) => <ItemChat item={item} />}
+        keyExtractor={item => item.id.toString()}
+        contentContainerStyle={styles.flatListContent}
+        style={styles.flatList}
+        inverted={chatList.length > 0}
+      />
+
+      {
+        pendingChatItem && <ItemChat item={pendingChatItem} />
+      }
+
+      <InputMessage
+        setChatList={setChatList}
+        setPendingChatItem={setPendingChatItem}
+      />
+    </KeyboardAvoidingView>
+  )
 }
 
 export default ChatScreen
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-    },
-    flatList: {
-        flex: 1,
-    },
-    flatListContent: {
-        flexGrow: 1,
-        justifyContent: 'flex-start', // Đổi thành flex-start khi dùng inverted
-    }
+  root: {
+    flex: 1,
+  },
+  flatList: {
+    flex: 1,
+  },
+  flatListContent: {
+    flexGrow: 1,
+    justifyContent: 'flex-start', // Đổi thành flex-start khi dùng inverted
+  }
 })
