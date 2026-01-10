@@ -31,10 +31,21 @@ function Routers() {
                 />
             </Stack.Protected>
 
-             <Stack.Screen
+            <Stack.Screen
                 name="chat"
                 options={{
                     title: 'Chat',
+                    headerBackButtonDisplayMode: "minimal",
+                    contentStyle: {
+                        paddingBottom: bottomBarHeight
+                    }
+                }}
+            />
+
+             <Stack.Screen
+                name="note/note-form"
+                options={{
+                    title: 'Ghi chú',
                     headerBackButtonDisplayMode: "minimal",
                     contentStyle: {
                         paddingBottom: bottomBarHeight

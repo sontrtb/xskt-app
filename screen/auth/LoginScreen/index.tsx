@@ -7,7 +7,6 @@ import TextUi from "@/components/ui/TextUi";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import useTheme from "@/hooks/useColor";
 import { toastError } from "@/lib/toast";
-import { useBiometric } from "@/stores/useBiometric";
 import { PADDING_PAGE } from "@/theme/layout";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -24,8 +23,6 @@ function LoginScreen() {
 
     const router = useRouter()
 
-    const { enabelBiometric, setEnabelBiometric } = useBiometric()
-
     const {
         handleSubmit,
         control,
@@ -33,7 +30,7 @@ function LoginScreen() {
         reset,
     } = useForm<ILoginData>({
         defaultValues: {
-            username: enabelBiometric?.data.username,
+            username:'',
             password: '',
         },
         resolver: yupResolver(validationSchema()),
@@ -56,14 +53,13 @@ function LoginScreen() {
 
     const resetLogin = () => {
         reset()
-        setEnabelBiometric(undefined)
     }
 
     return (
         <AuthLayout>
             <View style={styles.root}>
                 <View>
-                    <TextUi allowFontScaling={false} style={[styles.title, { color: color.primary }]}>{enabelBiometric?.enabel ? "Xin chào" : "Đăng nhập"}</TextUi>
+                    {/* <TextUi allowFontScaling={false} style={[styles.title, { color: color.primary }]}>{enabelBiometric?.enabel ? "Xin chào" : "Đăng nhập"}</TextUi>
                     {enabelBiometric?.data.fullname &&
                         <TextUi allowFontScaling={false} style={[styles.subTitle, { color: color.primary }]}>{enabelBiometric?.data.fullname}</TextUi>
                     }
@@ -74,11 +70,11 @@ function LoginScreen() {
                         <TouchableOpacityUi onPress={resetLogin}>
                             <TextUi style={{ textDecorationLine: 'underline' }}>Hoặc đăng nhập bằng tài khoản khác</TextUi>
                         </TouchableOpacityUi>
-                    }
+                    } */}
 
 
                     <View style={styles.card}>
-                        {
+                        {/* {
                             !enabelBiometric?.data.username &&
                             <Controller
                                 name="username"
@@ -93,7 +89,7 @@ function LoginScreen() {
                                     />
                                 }}
                             />
-                        }
+                        } */}
 
                         <Controller
                             name="password"

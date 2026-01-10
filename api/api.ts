@@ -1,4 +1,3 @@
-import { useApartment } from "@/stores/useApartments";
 import { useAuth } from "@/stores/useAuth";
 import axios, {
   type AxiosError,
@@ -56,12 +55,9 @@ async function rootApi<T = undefined>(
     ...options,
   };
 
-  const apartmentSelect = useApartment.getState().apartmentSelect;
   const apiClient = axios.create({
     headers: {
       "Content-Type": options?.isFile ? "multipart/form-data" : "application/json",
-      "X-Domain-Id": apartmentSelect?.domainId,
-      "X-Apartment-Id": apartmentSelect?.apartmentId
     },
     baseURL: process.env.EXPO_PUBLIC_API_BASE_URL,
     timeout: 30000,

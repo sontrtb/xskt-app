@@ -1,53 +1,48 @@
-import Utility from "@/components/commons/Utility";
-import CardUi from "@/components/ui/CardUi";
-import useTheme from "@/hooks/useColor";
-// import { toastCommingSoon } from "@/lib/toast";
+import Utility from "@/screen/bottom-tab/HomeScreen/UtilitiesCard/Utility";
 import { PADDING_PAGE } from "@/theme/layout";
-import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from "expo-router";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
 const windowWidth = Dimensions.get('window').width;
 
 function UtilitiesCard() {
-    const color = useTheme()
     const router = useRouter();
 
     const utilities = [
         {
-            icon: <Feather name="layers" size={24} color={color.primary} />,
+            icon: require("@/assets/images/features/dream_book.png"),
             label: "Chat",
             onPress: () => {
                 router.navigate('/chat')
             }
         },
         {
-            icon: <Feather name="trello" size={24} color={color.primary} />,
+            icon: require("@/assets/images/features/dream_book.png"),
             label: "Dịch vụ",
             onPress: () => {
                 // router.navigate('/repair-service')
             }
         },
         {
-            icon: <Feather name="message-circle" size={24} color={color.primary} />,
+            icon: require("@/assets/images/features/dream_book.png"),
             label: "Ý kiến",
             // onPress: () => router.navigate("/residents-opinions")
         },
         {
-            icon: <Feather name="phone" size={24} color={color.primary} />,
+            icon: require("@/assets/images/features/dream_book.png"),
             label: "Liên hệ",
             // onPress: () => router.navigate("/contact")
         },
     ]
 
     return (
-        <CardUi style={styles.root}>
+        <View style={styles.root}>
             {
                 utilities.map((u, index) => (
                     <Utility {...u} key={index} />
                 ))
             }
-        </CardUi>
+        </View>
     )
 }
 
@@ -58,12 +53,11 @@ const styles = StyleSheet.create({
         marginHorizontal: PADDING_PAGE,
         flexDirection: "row",
         alignItems: "center",
-        gap: 20,
-        paddingHorizontal: PADDING_PAGE,
-        position: "absolute",
+        gap: 8,
         width: windowWidth - PADDING_PAGE * 2,
-        top: windowWidth * 4 / 5 - 50,
-        flexWrap: "wrap"
+        flexWrap: "wrap",
+        marginTop: 85
+
     },
     avatar: {
         height: 60,

@@ -25,18 +25,6 @@ export default function TabLayout() {
         />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="statistical">
-        <Label>Thống kê</Label>
-        <Icon
-          src={
-            <VectorIcon
-              family={Feather}
-              name="message-circle"
-            />
-          }
-        />
-      </NativeTabs.Trigger>
-
       <NativeTabs.Trigger
         name="setting"
       >
@@ -48,7 +36,19 @@ export default function TabLayout() {
             />
           }
         />
-        <Label>Thiết lập</Label>
+        <Label>Thống kê</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="note">
+        <Label>Sổ ghi</Label>
+        <Icon
+          src={
+            <VectorIcon
+              family={Feather}
+              name="book"
+            />
+          }
+        />
       </NativeTabs.Trigger>
     </NativeTabs>
   );

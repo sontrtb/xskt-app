@@ -22,7 +22,7 @@ const colors: IColor = {
     textNeutral: "#8f8f8f",
 
     bgCard: "#FFFFFF",
-    bgImage: "#f8e9e9ff",
+    bgImage: "rgb(255, 244, 244)",
 
     bottomTab: "#FFFFFF",
 
