@@ -11,27 +11,17 @@ function UtilitiesCard() {
     const utilities = [
         {
             icon: require("@/assets/images/features/dream_book.png"),
-            label: "Chat",
+            label: "Giải mã giấc mơ",
             onPress: () => {
                 router.navigate('/chat')
             }
         },
         {
-            icon: require("@/assets/images/features/dream_book.png"),
+            icon: require("@/assets/images/features/soi_cau.jpeg"),
             label: "Dịch vụ",
             onPress: () => {
                 // router.navigate('/repair-service')
             }
-        },
-        {
-            icon: require("@/assets/images/features/dream_book.png"),
-            label: "Ý kiến",
-            // onPress: () => router.navigate("/residents-opinions")
-        },
-        {
-            icon: require("@/assets/images/features/dream_book.png"),
-            label: "Liên hệ",
-            // onPress: () => router.navigate("/contact")
         },
     ]
 

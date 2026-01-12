@@ -75,6 +75,7 @@ function Routers() {
                 }}
             />
 
+
             <Stack.Protected guard={false}>
                 <Stack.Screen
                     name="auth/login"
