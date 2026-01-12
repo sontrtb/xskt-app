@@ -80,7 +80,7 @@ function NoteFormScreen() {
           render={({ field }) => (
             <TextInputUi
               label="Nội dung"
-              placeholder="Nhập nội dung"
+              placeholder="Ví dụ: Anh An số 20 - 30 điểm"
               value={field.value}
               onChangeText={field.onChange}
               multiline

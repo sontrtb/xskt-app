@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         gap: 8,
         width: windowWidth - PADDING_PAGE * 2,
         flexWrap: "wrap",
-        marginTop: 85
+        marginTop: 70
 
     },
     avatar: {

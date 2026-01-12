@@ -34,7 +34,7 @@ function Routers() {
             <Stack.Screen
                 name="chat"
                 options={{
-                    title: 'Chat',
+                    title: 'Giải mã giấc mơ',
                     headerBackButtonDisplayMode: "minimal",
                     contentStyle: {
                         paddingBottom: bottomBarHeight
@@ -42,10 +42,21 @@ function Routers() {
                 }}
             />
 
-             <Stack.Screen
+            <Stack.Screen
                 name="note/note-form"
                 options={{
                     title: 'Ghi chú',
+                    headerBackButtonDisplayMode: "minimal",
+                    contentStyle: {
+                        paddingBottom: bottomBarHeight
+                    }
+                }}
+            />
+
+            <Stack.Screen
+                name="live-result"
+                options={{
+                    title: 'Kết quả trực tiếp',
                     headerBackButtonDisplayMode: "minimal",
                     contentStyle: {
                         paddingBottom: bottomBarHeight
