@@ -1,4 +1,5 @@
 import useColor from '@/hooks/useColor';
+import { FontAwesome5 } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
 
@@ -31,8 +32,8 @@ export default function TabLayout() {
         <Icon
           src={
             <VectorIcon
-              family={Feather}
-              name="user"
+              family={FontAwesome5}
+              name="chart-bar"
             />
           }
         />

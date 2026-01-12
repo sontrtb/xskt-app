@@ -1,99 +1,79 @@
-// screens/note/NoteScreen.tsx
 import HeaderHome from "@/components/commons/HeaderHome";
-import ButtonUi from "@/components/ui/ButtonUi";
+import CardUi from "@/components/ui/CardUi";
+import Row from "@/components/ui/Row";
 import TextUi from "@/components/ui/TextUi";
+import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import useTheme from "@/hooks/useColor";
 import { toastSuccess } from "@/lib/toast";
-import { useNotes } from "@/stores/useNotes";
+import { INote, useNotes } from "@/stores/useNotes";
 import { PADDING_PAGE } from "@/theme/layout";
+import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
-interface Note {
-  id: string;
-  date: string;
-  title: string;
-  content: string;
-}
 
 function NoteScreen() {
   const color = useTheme();
-  const router = useRouter();
+  const router = useRouter()
 
   const { notes, deleteNote } = useNotes();
 
-  // Sắp xếp notes theo ngày giảm dần
-  const sortedNotes = [...notes].sort((a, b) => 
+  const sortedNotes = [...notes].sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
   const handleCreateNote = () => {
-    router.push("/note/note-form")
-  };
-
-  const handleEditNote = (note: Note) => {
     router.push({
-  to: "/note/note-form",
-  query: {
-    noteId: note.id
-  }
-})
+      pathname: '/note/note-form',
+    })
 
   };
+
+  const handleEditNote = (note: INote) => {
+    router.push({
+      pathname: '/note/note-form',
+      params: {
+        otherParam: JSON.stringify(note)
+      },
+    })
+  }
 
   const handleDeleteNote = (noteId: string) => {
     deleteNote(noteId);
     toastSuccess("Thành công", "Xóa ghi chú thành công");
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("vi-VN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
-  const renderNoteItem = ({ item }: { item: Note }) => (
+  const renderNoteItem = ({ item }: { item: INote }) => (
     <TouchableOpacity
-      style={[styles.noteCard, { borderColor: color.border }]}
       onPress={() => handleEditNote(item)}
       activeOpacity={0.7}
     >
-      <View style={styles.noteHeader}>
-        <TextUi style={[styles.noteDate, { color: color.textSecondary }]}>
-          {formatDate(item.date)}
-        </TextUi>
-        <TouchableOpacity
-          onPress={() => handleDeleteNote(item.id)}
-          style={styles.deleteButton}
-        >
-          <TextUi style={[styles.deleteText, { color: color.error }]}>
-            Xóa
+      <CardUi style={styles.item}>
+        <View style={styles.noteHeader}>
+          <TextUi style={[styles.noteDate, { color: color.textNeutral }]}>
+            {item.date}
           </TextUi>
-        </TouchableOpacity>
-      </View>
-      
-      <TextUi style={[styles.noteTitle, { color: color.text }]} numberOfLines={1}>
-        {item.title}
-      </TextUi>
-      
-      <TextUi
-        style={[styles.noteContent, { color: color.textSecondary }]}
-        numberOfLines={2}
-      >
-        {item.content}
-      </TextUi>
+          <TouchableOpacity
+            onPress={() => handleDeleteNote(item.date)}
+            style={styles.deleteButton}
+          >
+            <Feather name="trash-2" size={24} color={color.primary} />
+          </TouchableOpacity>
+        </View>
+
+        <TextUi>
+          {item.content}
+        </TextUi>
+      </CardUi>
     </TouchableOpacity>
   );
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <TextUi style={[styles.emptyText, { color: color.textSecondary }]}>
+      <TextUi style={[styles.emptyText, { color: color.textNeutral }]}>
         📝 Chưa có ghi chú nào
       </TextUi>
-      <TextUi style={[styles.emptySubText, { color: color.textSecondary }]}>
+      <TextUi style={[styles.emptySubText, { color: color.textNeutral }]}>
         Nhấn nút bên dưới để tạo ghi chú đầu tiên
       </TextUi>
     </View>
@@ -101,12 +81,20 @@ function NoteScreen() {
 
   return (
     <View style={[styles.root, { backgroundColor: color.bg }]}>
-      <HeaderHome title="Sổ ghi"/>
+      <HeaderHome title="Sổ ghi" action={
+        <TouchableOpacityUi onPress={handleCreateNote}>
+          <Row>
+            <Feather name="plus-circle" size={24} color="#fff" />
+            <TextUi style={{color: "#fff"}}>Tạo mới</TextUi>
+          </Row>
+        </TouchableOpacityUi>
+      }
+      />
 
       <FlatList
         data={sortedNotes}
         renderItem={renderNoteItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.date}
         contentContainerStyle={[
           styles.listContainer,
           sortedNotes.length === 0 && styles.listContainerEmpty,
@@ -114,14 +102,6 @@ function NoteScreen() {
         ListEmptyComponent={renderEmptyState}
         showsVerticalScrollIndicator={false}
       />
-
-      <View style={styles.buttonContainer}>
-        <ButtonUi
-          text="+ Tạo ghi chú mới"
-          style={styles.createButton}
-          onPress={handleCreateNote}
-        />
-      </View>
     </View>
   );
 }
@@ -132,19 +112,8 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
-  header: {
-    paddingHorizontal: PADDING_PAGE,
-    paddingTop: PADDING_PAGE,
-    paddingBottom: 12,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "600",
-  },
-  divider: {
-    width: 80,
-    height: 2,
-    marginTop: 8,
+  item: {
+    marginBottom: PADDING_PAGE
   },
   listContainer: {
     paddingHorizontal: PADDING_PAGE,
@@ -154,13 +123,6 @@ const styles = StyleSheet.create({
   listContainerEmpty: {
     flex: 1,
     justifyContent: "center",
-  },
-  noteCard: {
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    marginBottom: 12,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
   },
   noteHeader: {
     flexDirection: "row",
@@ -175,18 +137,10 @@ const styles = StyleSheet.create({
   deleteButton: {
     padding: 4,
   },
-  deleteText: {
-    fontSize: 12,
-    fontWeight: "600",
-  },
   noteTitle: {
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 6,
-  },
-  noteContent: {
-    fontSize: 14,
-    lineHeight: 20,
   },
   emptyState: {
     alignItems: "center",
@@ -199,17 +153,5 @@ const styles = StyleSheet.create({
   },
   emptySubText: {
     fontSize: 14,
-  },
-  buttonContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: PADDING_PAGE,
-    paddingVertical: PADDING_PAGE,
-    backgroundColor: "transparent",
-  },
-  createButton: {
-    marginTop: 0,
   },
 });

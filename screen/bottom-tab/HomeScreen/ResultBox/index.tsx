@@ -1,5 +1,6 @@
 import CardUi from "@/components/ui/CardUi";
 import TitleUi from "@/components/ui/Title";
+import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
@@ -7,8 +8,10 @@ import { Dimensions, StyleSheet, Text, View } from "react-native";
 const windowWidth = Dimensions.get('window').width;
 
 function ResultBox() {
+    const color = useColor()
+
     return (
-        <CardUi style={styles.root}>
+        <CardUi style={[styles.root, {borderColor: color.primary}]}>
             <View style={styles.headerContainer}>
                 <MaterialCommunityIcons 
                     name="star-four-points" 
@@ -42,6 +45,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         gap: 12,
         alignItems: "center",
+        borderWidth: 1
     },
     headerContainer: {
         flexDirection: "row",

@@ -3,20 +3,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface Note {
-  id: string;
+export interface INote {
   date: string;
-  title: string;
   content: string;
 }
 
 interface NotesState {
-  notes: Note[];
-  addNote: (note: Omit<Note, 'id'>) => void;
-  updateNote: (id: string, note: Partial<Omit<Note, 'id'>>) => void;
-  deleteNote: (id: string) => void;
-  getNoteByDate: (date: string) => Note | undefined;
-  getNoteById: (id: string) => Note | undefined;
+  notes: INote[];
+  addNote: (note: INote) => void;
+  updateNote: (date: string, note: Partial<Omit<INote, 'date'>>) => void;
+  deleteNote: (date: string) => void;
+  getNoteByDate: (date: string) => INote | undefined;
+  getNoteById: (date: string) => INote | undefined;
 }
 
 export const useNotes = create<NotesState>()(
@@ -25,26 +23,25 @@ export const useNotes = create<NotesState>()(
       notes: [],
       
       addNote: (note) => {
-        const newNote: Note = {
+        const newNote: INote = {
           ...note,
-          id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         };
         set((state) => ({
           notes: [...state.notes, newNote],
         }));
       },
       
-      updateNote: (id, updatedNote) => {
+      updateNote: (date, updatedNote) => {
         set((state) => ({
           notes: state.notes.map((note) =>
-            note.id === id ? { ...note, ...updatedNote } : note
+            note.date === date ? { ...note, ...updatedNote } : note
           ),
         }));
       },
       
-      deleteNote: (id) => {
+      deleteNote: (date) => {
         set((state) => ({
-          notes: state.notes.filter((note) => note.id !== id),
+          notes: state.notes.filter((note) => note.date !== date),
         }));
       },
       
@@ -52,8 +49,8 @@ export const useNotes = create<NotesState>()(
         return get().notes.find((note) => note.date === date);
       },
       
-      getNoteById: (id) => {
-        return get().notes.find((note) => note.id === id);
+      getNoteById: (date) => {
+        return get().notes.find((note) => note.date === date);
       },
     }),
     {

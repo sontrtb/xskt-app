@@ -31,7 +31,6 @@ function TextInputUi(props: TextInputUiProps) {
             {label && <TextUi style={styles.label}>{label} {required && <TextUi style={styles.required}>*</TextUi>}</TextUi>}
             <View style={styles.inputContainer}>
                 <TextInput
-                    
                     placeholderTextColor={color.disable}
                     onFocus={(e) => {
                         setIsFocused(true)
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     inputContainer: {
-        position: "relative"
+        position: "relative",
     },
     required: {
         color: "red",
