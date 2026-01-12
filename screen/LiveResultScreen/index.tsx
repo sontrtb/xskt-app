@@ -4,11 +4,14 @@ import SpaceUi from "@/components/ui/SpaceUi";
 import TextUi from "@/components/ui/TextUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
+import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { WebView } from 'react-native-webview';
 
 function LiveResultScreen() {
     const color = useColor()
+
+    const router = useRouter()
 
     const html = `
         <!DOCTYPE html>
@@ -150,6 +153,9 @@ function LiveResultScreen() {
                 <ButtonUi
                     type="outline"
                     text="Xem kết quả các ngày trước"
+                    onPress={() => {
+                        router.push("/result")
+                    }}
                 />
             </CardUi>
             <CardUi style={styles.container}>

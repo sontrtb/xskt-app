@@ -46,6 +46,7 @@ function DatePickerUi(props: DatePickerUiProps) {
                     placeholder="Chọn ngày"
                     value={value}
                     style={{color: color.text, borderColor: isModalVisible ? color.primary : color.borderColor}}
+                    onPress={() => setModalVisible(true)}
                 />
             </TouchableOpacityUi>
             <BottomSheet

@@ -29,7 +29,7 @@ function TextInputUi(props: TextInputUiProps) {
     return (
         <View style={styles.root}>
             {label && <TextUi style={styles.label}>{label} {required && <TextUi style={styles.required}>*</TextUi>}</TextUi>}
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, {height: height}]}>
                 <TextInput
                     placeholderTextColor={color.disable}
                     onFocus={(e) => {
@@ -77,7 +77,6 @@ export default TextInputUi
 
 const styles = StyleSheet.create({
     root: {
-        flex: 1
     },
     inputContainer: {
         position: "relative",

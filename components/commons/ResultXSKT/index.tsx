@@ -19,7 +19,7 @@ const mockResults = {
   seventhPrize: ["12", "34", "56", "78"]
 };
 
-function ResultMini() {
+function ResultXSKT() {
     const color = useColor()
 
   const [dateString, setDateString] = useState<string>(
@@ -91,7 +91,7 @@ function ResultMini() {
   );
 }
 
-export default ResultMini;
+export default ResultXSKT;
 
 const styles = StyleSheet.create({
   root: {

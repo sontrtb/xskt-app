@@ -64,6 +64,17 @@ function Routers() {
                 }}
             />
 
+            <Stack.Screen
+                name="result"
+                options={{
+                    title: 'Kết quả',
+                    headerBackButtonDisplayMode: "minimal",
+                    contentStyle: {
+                        paddingBottom: bottomBarHeight
+                    }
+                }}
+            />
+
             <Stack.Protected guard={false}>
                 <Stack.Screen
                     name="auth/login"
