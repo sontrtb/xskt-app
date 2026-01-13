@@ -1,176 +1,159 @@
 import ButtonUi from "@/components/ui/ButtonUi";
 import CardUi from "@/components/ui/CardUi";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 import SpaceUi from "@/components/ui/SpaceUi";
 import TextUi from "@/components/ui/TextUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useRouter } from "expo-router";
+import moment from "moment";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { WebView } from 'react-native-webview';
 
+function isBeforeOrToday(dateStr: string) {
+    const inputDate = moment(dateStr, "DD/MM/YYYY");
+    const today = moment();
+
+    // so sánh theo ngày (bỏ giờ phút)
+    return inputDate.isSameOrBefore(today, "day");
+}
+
 function LiveResultScreen() {
     const color = useColor()
-
     const router = useRouter()
 
-    const html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <script language="javascript" src="https://www.minhngoc.net.vn/jquery/jquery-1.7.2.js"></script>
-            <link rel="stylesheet" type="text/css" href="https://www.minhngoc.net.vn/style/bangketqua_mini.css"/>
-            <style>
-                /* Ẩn toàn bộ header */
-                #box_kqxs_minhngoc > div:first-child {
-                    display: none !important;
-                }
-                
-                /* Ẩn border ngoài */
-                #box_kqxs_minhngoc {
-                    border: none !important;
-                }
-                
-                .box_kqxs_mini {
-                    border: none !important;
-                    box-shadow: none !important;
-                }
-                
-                .box_kqxs_mini .top,
-                .box_kqxs_mini .content {
-                    border: none !important;
-                }
-                
-                /* Ẩn tiêu đề "KQXS Miền Bắc" */
-                .box_kqxs_mini .title {
-                    display: none !important;
-                }
-                
-                .box_kqxs_mini .top {
-                    display: none !important;
-                }
-                
-                /* Reset table styles */
-                .bkqtinhmienbac_mini {
-                    border-collapse: collapse !important;
-                }
-                
-                /* Style cho các hàng - giống ResultMini */
-                .bkqtinhmienbac_mini tr {
-                    border: none !important;
-                    border-bottom: 1px solid #fff !important;
-                }
-                
-                .bkqtinhmienbac_mini td {
-                    border: none !important;
-                    padding: 12px 8px !important;
-                    vertical-align: middle !important;
-                }
-                
-                /* Style cho cột tiêu đề giải (cột trái) */
-                .bkqtinhmienbac_mini td:first-child {
-                    width: 100px !important;
-                    font-weight: 600 !important;
-                    font-size: 16px !important;
-                }
-                
-                /* Style cho cột số (cột phải) */
-                .bkqtinhmienbac_mini td:last-child {
-                    flex: 1 !important;
-                    font-family: monospace !important;
-                    font-size: 16px !important;
-                    font-weight: 600 !important;
-                }
-                
-                /* Style đặc biệt cho giải ĐB */
-                .bkqtinhmienbac_mini tr:nth-child(2) {
-                    border-bottom: 2px solid ${color.primary} !important;
-                    background-color: ${color.bgImage} !important;
-                }
-                
-                .bkqtinhmienbac_mini tr:nth-child(2) td:first-child {
-                    color: ${color.primary} !important;
-                    font-size: 16px !important;
-                    font-weight: 700 !important;
-                }
-                
-                .bkqtinhmienbac_mini tr:nth-child(2) td:last-child {
-                    color: ${color.primary} !important;
-                    font-weight: 700 !important;
-                    font-size: 18px !important;
-                }
-                
-                /* Style cho hàng ngày tháng */
-                .bkqtinhmienbac_mini tr:first-child td {
-                    background-color: ${color.bgCard} !important;
-                    font-weight: 600 !important;
-                }
-                
-                /* Thêm khoảng cách giữa các số */
-                .bkqtinhmienbac_mini td:last-child {
-                    word-spacing: 4px !important;
-                }
+    const [isLive, setIsLive] = useState(true)
+    const [loading, setLoading] = useState(true);
 
-                /* Ẩn tất cả border của table */
-                .bkqtinhmienbac_mini,
-                .bkqtinhmienbac_mini tbody,
-                .bkqtinhmienbac_mini tr,
-                .bkqtinhmienbac_mini td {
-                    border-top: none !important;
-                    border-left: none !important;
-                    border-right: none !important;
+
+    // JavaScript để inject CSS và lấy ngày
+    const injectedJavaScript = `
+        (function() {
+            function hideElements() {
+                const style = document.createElement('style');
+                style.textContent = \`
+                    /* Ẩn link */
+                    a { display: none !important; }
+                    .clnote { display: none !important; }
+
+                    .txt-giai {
+                        font-weight: 600;
+                        font-size: 16px;
+                    }
+                    
+                    /* Ẩn control panel (đầy đủ, 2 số, 3 số) */
+                    .control-panel { display: none !important; }
+                    .hover-panel { display: none !important; }
+                    .buttons-wrapper { display: none !important; }
+                    
+                    /* Ẩn bảng đầu đuôi */
+                    .col-firstlast { display: none !important; }
+                    
+                    /* Ngăn scroll */
+                    html, body {
+                        overflow: hidden !important;
+                        height: 100% !important;
+                        background-color: ${color.bgCard} !important;
+                    }
+                    
+                    body {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                \`;
+                document.head.appendChild(style);
+                
+                // Lấy ngày từ h1
+                const h1Element = document.querySelector('h1.regional-title');
+                if (h1Element) {
+                    const fullText = h1Element.textContent || h1Element.innerText;
+                    const dateMatch = fullText.match(/ngày\\s+(\\d{2}\\/\\d{2}\\/\\d{4})/);
+                    if (dateMatch) {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({
+                            type: 'date',
+                            date: dateMatch[1]
+                        }));
+                    }
                 }
                 
-                /* Reset border cho body và container */
-                body, html, #box_kqxs_minhngoc, .box_kqxs_mini {
-                    border: none !important;
-                    outline: none !important;
-                    box-shadow: none !important;
-                }
-                    
-            </style>
-        </head>
-        <body style="margin: 0; padding: 0;">
-            <div id="box_kqxs_minhngoc">
-                <script language="javascript"> 
-                    bgcolor="${color.bg}";
-                    titlecolor="${color.primary}";
-                    dbcolor="${color.primary}";
-                    fsize="18px";
-                    kqwidth="100%"; 
-                </script>
-                <script language="javascript" src="https://www.minhngoc.net.vn/getkqxs/mien-bac.js"></script>
-            </div>
-        </body>
-        </html>
-    `
+                // Chặn tất cả click event
+                document.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, true);
+                
+                document.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                }, true);
+                
+                // Ngăn scroll bằng JavaScript
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', hideElements);
+            } else {
+                hideElements();
+            }
+            
+            setTimeout(hideElements, 300);
+        })();
+        true;
+    `;
+
+    const handleWebViewMessage = (event: any) => {
+        try {
+            const data = JSON.parse(event.nativeEvent.data);
+            if (data.type === 'date') {
+                setIsLive(isBeforeOrToday(data.date));
+            }
+        } catch (error) {
+            setIsLive(false)
+            console.error('Error parsing WebView message:', error);
+        }
+    };
 
     return (
-        <View style={[styles.root, { backgroundColor: color.bg }]}>
-            <CardUi title="Hiện tại chưa đến giờ quay số.">
-                <TextUi>Vui lòng quay lại sau 6 giờ 15 phút.</TextUi>
-                <SpaceUi height={PADDING_PAGE}/>
-                <ButtonUi
-                    type="outline"
-                    text="Xem kết quả các ngày trước"
-                    onPress={() => {
-                        router.push("/result")
-                    }}
-                />
-            </CardUi>
-            <CardUi style={styles.container}>
-                <WebView
-                    style={[styles.container, { backgroundColor: color.bgCard }]}
-                    source={{ html: html }}
-                    originWhitelist={['*']}
-                    javaScriptEnabled={true}
-                    domStorageEnabled={true}
-                    mixedContentMode="always"
-                    allowFileAccess={true}
-                    allowUniversalAccessFromFileURLs={true}
-                />
-            </CardUi>
-        </View>
+        <LoadingScreen isLoading={loading}>
+            <View style={[styles.root, { backgroundColor: color.bg }]}>
+                <CardUi title={isLive ? "Trực tiếp..." : "Hiện tại chưa đến giờ quay số."}>
+                    <TextUi>{isLive ? "Kết quả xổ số hôm nay." : "Vui lòng quay lại sau 6 giờ 15 phút."}</TextUi>
+                    <SpaceUi height={PADDING_PAGE} />
+                    <ButtonUi
+                        type="outline"
+                        text="Xem kết quả các ngày trước"
+                        onPress={() => {
+                            router.push("/result")
+                        }}
+                    />
+                </CardUi>
+
+                <CardUi style={styles.container}>
+                    <WebView
+                        onLoadStart={() => setLoading(true)}
+                        onLoadEnd={() => setLoading(false)}
+                        style={[styles.container, { backgroundColor: color.bgCard }]}
+                        source={{ uri: 'https://xosothantai.mobi/embedded/kq-mienbac' }}
+                        injectedJavaScript={injectedJavaScript}
+                        onMessage={handleWebViewMessage}
+                        scrollEnabled={false}
+                        bounces={false}
+                        overScrollMode="never"
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        onShouldStartLoadWithRequest={(request) => {
+                            if (request.url === 'https://xosothantai.mobi/embedded/kq-mienbac' ||
+                                request.url === 'about:blank') {
+                                return true;
+                            }
+                            return false;
+                        }}
+                    />
+                </CardUi>
+            </View>
+        </LoadingScreen>
     )
 }
 

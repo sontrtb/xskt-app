@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     loadingWrap: {
         height: windowHeight,
         width: windowWidth,
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        backgroundColor: "rgba(255, 255, 255, 1)",
         position: "absolute",
         zIndex: 10000,
         alignItems: "center",

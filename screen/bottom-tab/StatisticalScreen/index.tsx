@@ -1,49 +1,58 @@
 import HeaderHome from "@/components/commons/HeaderHome";
-import CardUi from "@/components/ui/CardUi";
 import { PADDING_PAGE } from "@/theme/layout";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { BarChart } from "react-native-gifted-charts";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import ConsecutivePairs from "./components/ConsecutivePairs";
+import TopPairs from "./components/TopPairs";
 
 
 function StatisticalScreen() {
-    const data = [{ value: 50 }, { value: 80 }, { value: 90 }, { value: 70 }]
 
-    return (
-        <View style={styles.root}>
-            <HeaderHome title="Thống kê" />
-            <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-
-
-                <CardUi>
-                    <BarChart data={data} />
-                </CardUi>
-
-                <CardUi>
-                    <BarChart data={data} />
-                </CardUi>
-                <CardUi>
-                    <BarChart data={data} />
-                </CardUi>
-                <CardUi>
-                    <BarChart data={data} />
-                </CardUi>
-                <CardUi>
-                    <BarChart data={data} />
-                </CardUi>
-            </ScrollView>
-        </View>
-    )
+  return (
+    <View style={styles.root}>
+      <HeaderHome title="Thống kê" />
+      <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+        <TopPairs />
+        <ConsecutivePairs />
+      </ScrollView>
+    </View>
+  );
 }
 
-export default StatisticalScreen
+export default StatisticalScreen;
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-    },
-    contentContainerStyle: {
-        flex: 1,
-        padding: PADDING_PAGE,
-        gap: PADDING_PAGE
-    }
-})
+  root: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+  },
+  contentContainerStyle: {
+    padding: PADDING_PAGE,
+    gap: PADDING_PAGE,
+    paddingBottom: Platform.OS === "android" ? 130 : 20,
+  },
+  chartContainer: {
+    padding: 16,
+    alignItems: 'center',
+  },
+  chartTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 20,
+    color: '#1e293b',
+    alignSelf: 'flex-start',
+  },
+  topLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  yAxisText: {
+    fontSize: 11,
+    color: '#64748b',
+  },
+  xAxisText: {
+    fontSize: 11,
+    color: '#64748b',
+    fontWeight: '500',
+  },
+});

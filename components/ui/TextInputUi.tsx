@@ -77,6 +77,7 @@ export default TextInputUi
 
 const styles = StyleSheet.create({
     root: {
+        // flex: 1
     },
     inputContainer: {
         position: "relative",
