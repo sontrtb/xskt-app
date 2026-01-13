@@ -81,6 +81,7 @@ function InputMessage(props: InputMessageProps) {
     return (
         <Row style={styles.root}>
             <TextInputUi
+                height={40}
                 styleRoot={{ flex: 1}}
                 value={textInput}
                 onChangeText={setTextInput}

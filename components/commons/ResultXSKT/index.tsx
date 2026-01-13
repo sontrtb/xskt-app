@@ -1,37 +1,33 @@
+import { kqxs } from "@/api/kqxs";
 import CardUi from "@/components/ui/CardUi";
 import DatePickerUi from "@/components/ui/DatePickerUi";
 import TextUi from "@/components/ui/TextUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
+import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-// Mock data cho kết quả xổ số
-const mockResults = {
-  specialPrize: "123456",
-  firstPrize: "789012",
-  secondPrize: ["345678", "901234"],
-  thirdPrize: ["567890", "123457", "789013", "345679", "901235", "567891"],
-  fourthPrize: ["1234", "5678", "9012", "3456"],
-  fifthPrize: ["7890", "1235", "5679", "9013", "3457", "7891"],
-  sixthPrize: ["789", "012", "345"],
-  seventhPrize: ["12", "34", "56", "78"]
-};
-
 function ResultXSKT() {
-    const color = useColor()
+  const color = useColor()
 
   const [dateString, setDateString] = useState<string>(
     moment().subtract(1, "day").format("DD-MM-YYYY")
   );
 
+  const kqxsQuery = useQuery({
+    queryKey: ["kqxs", dateString],
+    queryFn: () => kqxs(dateString)
+  })
+  const data = kqxsQuery.data?.data
+
   // Render số dạng quả bóng cho giải đặc biệt
-  const renderBallNumber = (number: string) => {
+  const renderBallNumber = (number?: string) => {
     return (
       <View style={styles.ballContainer}>
-        {number.split('').map((digit, idx) => (
-          <View key={idx} style={[styles.ball, {backgroundColor: color.primary}]}>
+        {number?.split('').map((digit, idx) => (
+          <View key={idx} style={[styles.ball, { backgroundColor: color.primary }]}>
             <TextUi style={styles.ballText}>{digit}</TextUi>
           </View>
         ))}
@@ -42,30 +38,26 @@ function ResultXSKT() {
   // Render một dòng giải thưởng
   const renderPrize = (
     title: string,
-    numbers: string | string[],
+    numbers?: string,
     isSpecial = false
   ) => {
     return (
-      <View style={[styles.prizeRow, isSpecial && {...styles.specialRow, borderBottomColor: color.primary, backgroundColor: color.bgImage}]}>
+      <View style={[styles.prizeRow, isSpecial && { ...styles.specialRow, borderBottomColor: color.primary, backgroundColor: color.bgImage }]}>
         <View style={styles.prizeTitle}>
-          <TextUi style={[styles.prizeTitleText, isSpecial && {...styles.specialText, color: color.primary}]}>
+          <TextUi style={[styles.prizeTitleText, isSpecial && { ...styles.specialText, color: color.primary }]}>
             {title}
           </TextUi>
         </View>
         <View style={styles.prizeNumbers}>
           {isSpecial ? (
-            renderBallNumber(numbers as string)
+            renderBallNumber(numbers)
           ) : (
             <View style={styles.numbersWrapper}>
-              {Array.isArray(numbers) ? (
-                numbers.map((num, idx) => (
-                  <TextUi key={idx} style={styles.numberText}>
-                    {num}
-                  </TextUi>
-                ))
-              ) : (
-                <TextUi style={styles.numberText}>{numbers}</TextUi>
-              )}
+              {numbers?.split(',').map((num, idx) => (
+                <TextUi key={idx} style={styles.numberText}>
+                  {num}
+                </TextUi>
+              ))}
             </View>
           )}
         </View>
@@ -78,14 +70,15 @@ function ResultXSKT() {
       <DatePickerUi onChange={setDateString} value={dateString} />
 
       <View style={styles.resultsContainer}>
-        {renderPrize("Giải ĐB", mockResults.specialPrize, true)}
-        {renderPrize("Giải Nhất", mockResults.firstPrize)}
-        {renderPrize("Giải Nhì", mockResults.secondPrize)}
-        {renderPrize("Giải Ba", mockResults.thirdPrize)}
-        {renderPrize("Giải Tư", mockResults.fourthPrize)}
-        {renderPrize("Giải Năm", mockResults.fifthPrize)}
-        {renderPrize("Giải Sáu", mockResults.sixthPrize)}
-        {renderPrize("Giải Bảy", mockResults.seventhPrize)}
+        {renderPrize("Giải ĐB", data?.specialPrize, true)}
+        {renderPrize("Giải Nhất", data?.firstPrize)}
+        {renderPrize("Giải Nhì", data?.secondPrize)}
+        {renderPrize("Giải Ba", data?.thirdPrize)}
+        {renderPrize("Giải Tư", data?.fourthPrize)}
+        {renderPrize("Giải Năm", data?.fifthPrize)}
+        {renderPrize("Giải Sáu", data?.sixthPrize)}
+        {renderPrize("Giải Bảy", data?.seventhPrize)}
+        {renderPrize("Mã đặc biệt", data?.ticketCodes)}
       </View>
     </CardUi>
   );
