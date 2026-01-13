@@ -1,18 +1,39 @@
+import { statistical } from "@/api/statistical";
 import HeaderHome from "@/components/commons/HeaderHome";
 import { PADDING_PAGE } from "@/theme/layout";
+import { useQuery } from "@tanstack/react-query";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import ConsecutivePairs from "./components/ConsecutivePairs";
+import LongestAbsentPairs from "./components/LongestAbsentPairs";
 import TopPairs from "./components/TopPairs";
 
-
 function StatisticalScreen() {
+  const statisticalQuery = useQuery({
+      queryFn: statistical,
+      queryKey: ["statistical"]
+  })
+
+  const data = statisticalQuery.data?.data
 
   return (
     <View style={styles.root}>
       <HeaderHome title="Thống kê" />
       <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-        <TopPairs />
-        <ConsecutivePairs />
+        <TopPairs
+          key={`top_pairs_${statisticalQuery.isLoading}`}
+          data3={data?.topPairs3Days}
+          data7={data?.topPairs7Days}
+        />
+
+        <ConsecutivePairs
+          key={`consecutive_pairs_${statisticalQuery.isLoading}`}
+          data={data?.consecutivePairs}
+        />
+
+        <LongestAbsentPairs
+          data={data?.longestAbsentPairs}
+          key={`longest_absent_pairs_${statisticalQuery.isLoading}`}
+        />
       </ScrollView>
     </View>
   );

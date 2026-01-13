@@ -1,7 +1,7 @@
 import useTheme from "@/hooks/useColor";
 import Feather from '@expo/vector-icons/Feather';
 import { useState } from "react";
-import { StyleSheet, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
+import { StyleProp, StyleSheet, TextInput, TextInputProps, TouchableOpacity, View, ViewStyle } from "react-native";
 import TextUi from "./TextUi";
 
 interface TextInputUiProps extends TextInputProps {
@@ -10,6 +10,7 @@ interface TextInputUiProps extends TextInputProps {
     height?: number;
     isPassword?: boolean;
     required?: boolean;
+    styleRoot?: StyleProp<ViewStyle>
 }
 
 function TextInputUi(props: TextInputUiProps) {
@@ -19,6 +20,7 @@ function TextInputUi(props: TextInputUiProps) {
         height,
         isPassword,
         required,
+        styleRoot,
         ...restProps
     } = props
 
@@ -27,7 +29,7 @@ function TextInputUi(props: TextInputUiProps) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
     return (
-        <View style={styles.root}>
+        <View style={[styles.root, styleRoot]}>
             {label && <TextUi style={styles.label}>{label} {required && <TextUi style={styles.required}>*</TextUi>}</TextUi>}
             <View style={[styles.inputContainer, {height: height}]}>
                 <TextInput

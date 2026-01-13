@@ -11,17 +11,9 @@ export interface IPage {
 }
 
 export interface IDataResponse<T = unknown> {
-  success?: boolean;
+  status?: string;
   message?: string;
   data: T;
-  extra?: {
-    page?: {
-      size: number,
-      number: number,
-      totalElements: number,
-      totalPages: number
-    }
-  }
 }
 
 export class ApiError extends Error {
@@ -50,8 +42,7 @@ async function rootApi<T = undefined>(
   options?: IRootApiOptions,
 ): Promise<IDataResponse<T>> {
   const defaultOptions = {
-    withToken: true,
-    displayError: true,
+    withToken: false,
     ...options,
   };
 
@@ -72,14 +63,12 @@ async function rootApi<T = undefined>(
     }
   }
 
-
-
   try {
     const response: AxiosResponse<IDataResponse<T>> = await apiClient.request({
       ...config,
     });
 
-    if (!response.data.success) {
+    if (response.data.status === "error") {
       throw new ApiError(
         response.data.message || 'Bad Request',
         400,

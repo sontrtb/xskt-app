@@ -81,6 +81,7 @@ function InputMessage(props: InputMessageProps) {
     return (
         <Row style={styles.root}>
             <TextInputUi
+                styleRoot={{ flex: 1}}
                 value={textInput}
                 onChangeText={setTextInput}
                 style={styles.textInput}
@@ -104,7 +105,8 @@ const styles = StyleSheet.create({
         padding: PADDING_PAGE
     },
     textInput: {
-        borderRadius: 100
+        borderRadius: 100,
+        flex: 1
     },
     btnSend: {
         height: 44,
