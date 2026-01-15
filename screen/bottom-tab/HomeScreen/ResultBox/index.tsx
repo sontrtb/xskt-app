@@ -1,10 +1,13 @@
+import { kqxs } from "@/api/kqxs";
 import CardUi from "@/components/ui/CardUi";
 import TitleUi from "@/components/ui/Title";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import moment from "moment";
 import { useEffect } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import Animated, {
@@ -47,6 +50,14 @@ function ResultBox() {
         };
     });
 
+    const dateString = moment().subtract(1, "day").format("DD-MM-YYYY");
+
+    const kqxsQuery = useQuery({
+        queryKey: ["kqxs", dateString],
+        queryFn: () => kqxs(dateString)
+    })
+    const data = kqxsQuery.data?.data
+
     return (
         <TouchableOpacityUi
             style={styles.root}
@@ -62,14 +73,14 @@ function ResultBox() {
                             size={20}
                             color="#FFD700"
                         />
-                        <TitleUi style={{ fontSize: 14 }}>Giải đặc biệt 10/12/2025:</TitleUi>
+                        <TitleUi style={{ fontSize: 14 }}>Giải đặc biệt ngày {dateString}:</TitleUi>
                         <MaterialCommunityIcons
                             name="star-four-points"
                             size={20}
                             color="#FFD700"
                         />
                     </View>
-                    <Text style={[styles.luckyNumber, { color: color.primary }]}>204353</Text>
+                    <Text style={[styles.luckyNumber, { color: color.primary }]}>{data?.specialPrize}</Text>
                 </View>
 
                 <View style={styles.liveWrap}>
