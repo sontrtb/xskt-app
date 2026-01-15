@@ -1,12 +1,13 @@
 import { forecast } from "@/api/kqxs";
 import CardUi from "@/components/ui/CardUi";
 import LoadingScreen from "@/components/ui/LoadingScreen";
+import TextUi from "@/components/ui/TextUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import analytics from '@react-native-firebase/analytics';
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 
 function Forecast() {
@@ -93,14 +94,22 @@ function Forecast() {
                 style={styles.root}
                 title={forecastQuery.data?.data.title}
             >
-                <WebView
-                    originWhitelist={['*']}
-                    source={{ html: injectedHTML }}
-                    javaScriptEnabled={true}
-                    scrollEnabled={true}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                />
+                {
+                    forecastQuery.data?.data.htmlContent ?
+                        <WebView
+                            originWhitelist={['*']}
+                            source={{ html: injectedHTML }}
+                            javaScriptEnabled={true}
+                            scrollEnabled={true}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                        /> :
+                        <View>
+                            <TextUi weight="bold">Chưa có kết quả dự đoán.</TextUi>
+                            <TextUi>Kết quả sẽ cập nhật vào 6 giờ sáng hàng ngày</TextUi>
+                        </View>
+                }
+
             </CardUi>
         </LoadingScreen>
     )
