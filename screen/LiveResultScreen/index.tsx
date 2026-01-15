@@ -4,13 +4,15 @@ import LoadingScreen from "@/components/ui/LoadingScreen";
 import { adUnitBannerId } from "@/configs/admod";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
+import analytics from '@react-native-firebase/analytics';
 import { useRouter } from "expo-router";
 import moment from "moment";
-import { useRef, useState } from "react";
-import { Platform, ScrollView, StyleSheet } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Dimensions, Platform, ScrollView, StyleSheet } from "react-native";
 import { BannerAd, BannerAdSize, useForeground } from 'react-native-google-mobile-ads';
 import { WebView } from 'react-native-webview';
 
+const windowWidth = Dimensions.get('window').width;
 
 function isBeforeOrToday(dateStr: string) {
     const inputDate = moment(dateStr, "DD/MM/YYYY");
@@ -28,6 +30,12 @@ function LiveResultScreen() {
 
     const [isLive, setIsLive] = useState(true)
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        analytics().logScreenView({
+            screen_name: 'LiveResult',
+        });
+    }, [])
 
     useForeground(() => {
         Platform.OS === 'ios' && bannerRef.current?.load();
@@ -156,7 +164,12 @@ function LiveResultScreen() {
                         }}
                     />
                 </CardUi>
-                <BannerAd ref={bannerRef} unitId={adUnitBannerId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
+                <BannerAd
+                    width={windowWidth - PADDING_PAGE * 2}
+                    ref={bannerRef}
+                    unitId={adUnitBannerId} 
+                    size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                />
             </ScrollView>
         </LoadingScreen>
     )

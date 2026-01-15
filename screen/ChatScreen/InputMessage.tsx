@@ -7,6 +7,7 @@ import useSendMessage from "@/hooks/useSendMessage";
 import { PADDING_PAGE } from "@/theme/layout";
 import { EStatusChat, IChatIem } from "@/types/chat";
 import Feather from '@expo/vector-icons/Feather';
+import analytics from '@react-native-firebase/analytics';
 import { useEffect, useRef, useState } from "react";
 import { Keyboard, StyleSheet } from "react-native";
 
@@ -54,6 +55,7 @@ function InputMessage(props: InputMessageProps) {
 
     const handleSendMess = () => {
         Keyboard.dismiss()
+        analytics().logEvent('send chat');
         if (textInput.length > 0) {
             const newMess: IChatIem = {
                 id: new Date().getTime(),
@@ -82,7 +84,7 @@ function InputMessage(props: InputMessageProps) {
         <Row style={styles.root}>
             <TextInputUi
                 height={40}
-                styleRoot={{ flex: 1}}
+                styleRoot={{ flex: 1 }}
                 value={textInput}
                 onChangeText={setTextInput}
                 style={styles.textInput}

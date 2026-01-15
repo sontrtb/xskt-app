@@ -6,8 +6,10 @@ import useTheme from "@/hooks/useColor";
 import { toastSuccess } from "@/lib/toast";
 import { INote, useNotes } from "@/stores/useNotes";
 import { PADDING_PAGE } from "@/theme/layout";
+import analytics from '@react-native-firebase/analytics';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import moment from "moment";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ScrollView, StyleSheet, View } from "react-native";
 
@@ -23,11 +25,17 @@ function NoteFormScreen() {
 
   const { notes, addNote, updateNote } = useNotes();
 
+  useEffect(() => {
+    analytics().logScreenView({
+      screen_name: 'NoteForm',
+    });
+  }, [])
+
   const {
     handleSubmit,
     control,
   } = useForm<INote>({
-    defaultValues: defaultValues ?? {date: moment.utc(new Date()).local().format("DD-MM-YYYY")}
+    defaultValues: defaultValues ?? { date: moment.utc(new Date()).local().format("DD-MM-YYYY") }
   });
 
 
@@ -38,7 +46,7 @@ function NoteFormScreen() {
     } else {
       // Kiểm tra xem đã có ghi chú nào trong ngày này chưa
       const existingNote = notes.find(note => note.date === data.date);
-      
+
       if (existingNote) {
         // Nếu đã tồn tại, gộp nội dung với dấu "+"
         const mergedContent = `${existingNote.content}\n+ ${data.content}`;

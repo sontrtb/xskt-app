@@ -1,5 +1,7 @@
 import useColor from '@/hooks/useColor';
+import analytics from '@react-native-firebase/analytics';
 import Constants from 'expo-constants';
+import { useEffect } from 'react';
 import { Platform, ScrollView, StyleSheet } from 'react-native';
 import ResultXSKT from '../../../components/commons/ResultXSKT';
 import ResultBox from './ResultBox';
@@ -10,6 +12,12 @@ const statusBarHeight = Constants.statusBarHeight;
 
 export default function HomeScreen() {
   const color = useColor();
+
+  useEffect(() => {
+    analytics().logScreenView({
+      screen_name: 'Home',
+    });
+  },[])
 
   return (
     <ScrollView
@@ -37,3 +45,4 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === "android" ? 130 : 20,
   },
 });
+
