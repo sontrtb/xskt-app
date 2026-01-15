@@ -50,7 +50,6 @@
           "iosAppId": "ca-app-pub-2353852958898810~7708766258"
         }
       ],
-      "@react-native-firebase/app",
       [
         "expo-build-properties",
         {
