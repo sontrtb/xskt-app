@@ -1,16 +1,12 @@
 import { statistical } from "@/api/statistical";
 import HeaderHome from "@/components/commons/HeaderHome";
-import { adUnitBannerId } from "@/configs/admod";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useQuery } from "@tanstack/react-query";
-import { useRef } from "react";
-import { Dimensions, Platform, ScrollView, StyleSheet, View } from "react-native";
-import { BannerAd, BannerAdSize, useForeground } from 'react-native-google-mobile-ads';
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import ConsecutivePairs from "./components/ConsecutivePairs";
 import LongestAbsentPairs from "./components/LongestAbsentPairs";
 import TopPairs from "./components/TopPairs";
 
-const windowWidth = Dimensions.get('window').width;
 
 function StatisticalScreen() {
   const statisticalQuery = useQuery({
@@ -18,12 +14,6 @@ function StatisticalScreen() {
     queryKey: ["statistical"]
   })
   const data = statisticalQuery.data?.data
-
-  const bannerRef = useRef<BannerAd>(null);
-
-  useForeground(() => {
-    Platform.OS === 'ios' && bannerRef.current?.load();
-  });
 
   return (
     <View style={styles.root}>
@@ -34,8 +24,7 @@ function StatisticalScreen() {
           data3={data?.topPairs3Days}
           data7={data?.topPairs7Days}
         />
-        <BannerAd width={windowWidth - PADDING_PAGE * 2} ref={bannerRef} unitId={adUnitBannerId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
-
+  
         <LongestAbsentPairs
           data={data?.longestAbsentPairs}
           key={`longest_absent_pairs_${statisticalQuery.isLoading}`}

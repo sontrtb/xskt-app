@@ -1,18 +1,27 @@
+import TextInputUi from "@/components/ui/TextInputUi";
+import data from "@/configs/dream_book_data.json";
+import useColor from "@/hooks/useColor";
+import { PADDING_PAGE } from "@/theme/layout";
 import { StyleSheet, View } from "react-native";
 
-function WeatherBox() {
-    return (
-        <View style={styles.root}>
+function DreamBook() {
+    console.log(data)
+    const color = useColor()
 
+    return (
+        <View style={[styles.root, {backgroundColor: color.bg}]}>
+            <TextInputUi
+                placeholder="Tìm kiếm từ khoá: bò, gà, ăn cỗ..."
+            />
         </View>
     )
 }
 
-export default WeatherBox
+export default DreamBook
 
 const styles = StyleSheet.create({
     root: {
-        
+        padding: PADDING_PAGE
     }
 })
 

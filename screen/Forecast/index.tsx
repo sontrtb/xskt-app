@@ -3,12 +3,21 @@ import CardUi from "@/components/ui/CardUi";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
+import analytics from '@react-native-firebase/analytics';
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import WebView from "react-native-webview";
 
 function Forecast() {
     const color = useColor()
+
+
+    useEffect(() => {
+        analytics().logScreenView({
+            screen_name: 'ForecastScreen',
+        });
+    }, [])
 
     const forecastQuery = useQuery({
         queryFn: forecast,
@@ -16,7 +25,7 @@ function Forecast() {
     })
 
     // Inject CSS và JavaScript để vô hiệu hóa tất cả events và tùy chỉnh font
-    const injectedHTML = forecastQuery.data?.data.htmlContent 
+    const injectedHTML = forecastQuery.data?.data.htmlContent
         ? `
             <!DOCTYPE html>
             <html>

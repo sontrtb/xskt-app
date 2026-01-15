@@ -50,7 +50,11 @@ function ResultBox() {
         };
     });
 
-    const dateString = moment().subtract(1, "day").format("DD-MM-YYYY");
+    const sixThirty = moment().hour(6).minute(30).second(0);
+    const now = moment();
+    const dateString = now.isBefore(sixThirty)
+        ? moment().subtract(1, "day").format("DD-MM-YYYY")
+        : moment().format("DD-MM-YYYY");
 
     const kqxsQuery = useQuery({
         queryKey: ["kqxs", dateString],

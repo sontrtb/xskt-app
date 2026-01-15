@@ -15,7 +15,6 @@ import { useEffect } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useInterstitialAd } from "react-native-google-mobile-ads";
 
-
 function NoteScreen() {
   const color = useTheme();
   const router = useRouter()
@@ -48,7 +47,6 @@ function NoteScreen() {
     router.push({
       pathname: '/note/note-form',
     })
-
   };
 
   const handleEditNote = (note: INote) => {

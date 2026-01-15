@@ -2,6 +2,7 @@ import { kqxs } from "@/api/kqxs";
 import CardUi from "@/components/ui/CardUi";
 import DatePickerUi from "@/components/ui/DatePickerUi";
 import TextUi from "@/components/ui/TextUi";
+import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useQuery } from "@tanstack/react-query";
@@ -9,12 +10,23 @@ import moment from "moment";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-function ResultXSKT() {
+interface ResultXSKTProps {
+  disable?: boolean;
+  onPress?: () => void;
+}
+
+function ResultXSKT(props: ResultXSKTProps) {
+  const { disable, onPress } = props;
+
   const color = useColor()
 
-  const [dateString, setDateString] = useState<string>(
-    moment().subtract(1, "day").format("DD-MM-YYYY")
-  );
+  const sixThirty = moment().hour(6).minute(30).second(0);
+  const now = moment();
+  const dateStringInit = now.isBefore(sixThirty)
+    ? moment().subtract(1, "day").format("DD-MM-YYYY")
+    : moment().format("DD-MM-YYYY");
+
+  const [dateString, setDateString] = useState<string>(dateStringInit);
 
   const kqxsQuery = useQuery({
     queryKey: ["kqxs", dateString],
@@ -66,21 +78,23 @@ function ResultXSKT() {
   };
 
   return (
-    <CardUi title="Kết quả" style={styles.root}>
-      <DatePickerUi onChange={setDateString} value={dateString} />
+    <TouchableOpacityUi onPress={onPress} activeOpacity={onPress ? 0.5 : 1}>
+      <CardUi title="Kết quả" style={styles.root}>
+        <DatePickerUi onChange={setDateString} value={dateString} disable={disable} />
 
-      <View style={styles.resultsContainer}>
-        {renderPrize("Giải ĐB", data?.specialPrize, true)}
-        {renderPrize("Giải Nhất", data?.firstPrize)}
-        {renderPrize("Giải Nhì", data?.secondPrize)}
-        {renderPrize("Giải Ba", data?.thirdPrize)}
-        {renderPrize("Giải Tư", data?.fourthPrize)}
-        {renderPrize("Giải Năm", data?.fifthPrize)}
-        {renderPrize("Giải Sáu", data?.sixthPrize)}
-        {renderPrize("Giải Bảy", data?.seventhPrize)}
-        {renderPrize("Mã đặc biệt", data?.ticketCodes)}
-      </View>
-    </CardUi>
+        <View style={styles.resultsContainer}>
+          {renderPrize("Giải ĐB", data?.specialPrize, true)}
+          {renderPrize("Giải Nhất", data?.firstPrize)}
+          {renderPrize("Giải Nhì", data?.secondPrize)}
+          {renderPrize("Giải Ba", data?.thirdPrize)}
+          {renderPrize("Giải Tư", data?.fourthPrize)}
+          {renderPrize("Giải Năm", data?.fifthPrize)}
+          {renderPrize("Giải Sáu", data?.sixthPrize)}
+          {renderPrize("Giải Bảy", data?.seventhPrize)}
+          {renderPrize("Mã đặc biệt", data?.ticketCodes)}
+        </View>
+      </CardUi>
+    </TouchableOpacityUi>
   );
 }
 
@@ -109,7 +123,7 @@ const styles = StyleSheet.create({
   },
   prizeTitleText: {
     fontWeight: "600",
-    fontSize: 14,
+    fontSize: 16,
   },
   specialText: {
     fontSize: 16,
@@ -126,7 +140,7 @@ const styles = StyleSheet.create({
   },
   numberText: {
     fontFamily: "monospace",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
   },
   ballContainer: {

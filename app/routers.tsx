@@ -34,7 +34,7 @@ function Routers() {
             <Stack.Screen
                 name="chat"
                 options={{
-                    title: 'Giải mã giấc mơ',
+                    title: 'Trợ lý giải mã giấc mơ',
                     headerBackButtonDisplayMode: "minimal",
                     contentStyle: {
                         paddingBottom: bottomBarHeight
@@ -46,6 +46,17 @@ function Routers() {
                 name="forecast"
                 options={{
                     title: 'Dự đoán kết quả',
+                    headerBackButtonDisplayMode: "minimal",
+                    contentStyle: {
+                        paddingBottom: bottomBarHeight
+                    }
+                }}
+            />
+
+            <Stack.Screen
+                name="dream-book"
+                options={{
+                    title: 'Giải mã giấc mơ',
                     headerBackButtonDisplayMode: "minimal",
                     contentStyle: {
                         paddingBottom: bottomBarHeight

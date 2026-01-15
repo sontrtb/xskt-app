@@ -1,7 +1,6 @@
 import useColor from '@/hooks/useColor';
-import analytics from '@react-native-firebase/analytics';
 import Constants from 'expo-constants';
-import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 import { Platform, ScrollView, StyleSheet } from 'react-native';
 import ResultXSKT from '../../../components/commons/ResultXSKT';
 import ResultBox from './ResultBox';
@@ -12,12 +11,7 @@ const statusBarHeight = Constants.statusBarHeight;
 
 export default function HomeScreen() {
   const color = useColor();
-
-  useEffect(() => {
-    analytics().logScreenView({
-      screen_name: 'Home',
-    });
-  },[])
+  const router = useRouter()
 
   return (
     <ScrollView
@@ -31,7 +25,12 @@ export default function HomeScreen() {
       <ResultBox />
       <UtilitiesCard />
       {/* <Banner /> */}
-      <ResultXSKT />
+      <ResultXSKT
+        disable
+        onPress={() => {
+          router.push("/result")
+        }}  
+      />
     </ScrollView >
   );
 }

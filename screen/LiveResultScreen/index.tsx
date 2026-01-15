@@ -1,18 +1,15 @@
 import ButtonUi from "@/components/ui/ButtonUi";
 import CardUi from "@/components/ui/CardUi";
 import LoadingScreen from "@/components/ui/LoadingScreen";
-import { adUnitBannerId } from "@/configs/admod";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import analytics from '@react-native-firebase/analytics';
 import { useRouter } from "expo-router";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
-import { Dimensions, Platform, ScrollView, StyleSheet } from "react-native";
-import { BannerAd, BannerAdSize, useForeground } from 'react-native-google-mobile-ads';
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
 import { WebView } from 'react-native-webview';
 
-const windowWidth = Dimensions.get('window').width;
 
 function isBeforeOrToday(dateStr: string) {
     const inputDate = moment(dateStr, "DD/MM/YYYY");
@@ -23,7 +20,6 @@ function isBeforeOrToday(dateStr: string) {
 }
 
 function LiveResultScreen() {
-    const bannerRef = useRef<BannerAd>(null);
 
     const color = useColor()
     const router = useRouter()
@@ -33,13 +29,10 @@ function LiveResultScreen() {
 
     useEffect(() => {
         analytics().logScreenView({
-            screen_name: 'LiveResult',
+            screen_name: 'LiveResultScreen',
         });
     }, [])
 
-    useForeground(() => {
-        Platform.OS === 'ios' && bannerRef.current?.load();
-    });
 
     // JavaScript để inject CSS và lấy ngày
     const injectedJavaScript = `
@@ -164,12 +157,6 @@ function LiveResultScreen() {
                         }}
                     />
                 </CardUi>
-                <BannerAd
-                    width={windowWidth - PADDING_PAGE * 2}
-                    ref={bannerRef}
-                    unitId={adUnitBannerId} 
-                    size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-                />
             </ScrollView>
         </LoadingScreen>
     )

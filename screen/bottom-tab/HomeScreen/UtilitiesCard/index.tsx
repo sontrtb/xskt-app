@@ -13,16 +13,30 @@ function UtilitiesCard() {
             icon: require("@/assets/images/features/dream_book.jpg"),
             label: "Giải mã giấc mơ",
             onPress: () => {
-                router.navigate('/chat')
+                router.navigate('/dream-book')
             }
         },
         {
             icon: require("@/assets/images/features/forecast.jpg"),
-            label: "Dịch vụ",
+            label: "Dự đoán kết quả",
             onPress: () => {
                 router.navigate('/forecast')
             }
         },
+        //  {
+        //     icon: require("@/assets/images/features/forecast.jpg"),
+        //     label: "Quay thử lấy may",
+        //     onPress: () => {
+        //         router.navigate('/forecast')
+        //     }
+        // },
+        //  {
+        //     icon: require("@/assets/images/features/forecast.jpg"),
+        //     label: "Dịch vụ",
+        //     onPress: () => {
+        //         router.navigate('/forecast')
+        //     }
+        // },
     ]
 
     return (

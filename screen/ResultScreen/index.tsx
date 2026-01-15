@@ -1,20 +1,11 @@
 import ResultXSKT from "@/components/commons/ResultXSKT";
-import { adUnitBannerId } from "@/configs/admod";
-import { useRef } from "react";
-import { Platform, StyleSheet, View } from "react-native";
-import { BannerAd, BannerAdSize, useForeground } from 'react-native-google-mobile-ads';
+import { StyleSheet, View } from "react-native";
 
 function ResultScreen() {
-    const bannerRef = useRef<BannerAd>(null);
-
-    useForeground(() => {
-        Platform.OS === 'ios' && bannerRef.current?.load();
-    });
 
     return (
         <View style={styles.root}>
             <ResultXSKT />
-            <BannerAd ref={bannerRef} unitId={adUnitBannerId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
         </View>
     )
 }
