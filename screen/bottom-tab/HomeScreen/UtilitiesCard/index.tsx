@@ -17,10 +17,10 @@ function UtilitiesCard() {
             }
         },
         {
-            icon: require("@/assets/images/features/soi_cau.jpeg"),
+            icon: require("@/assets/images/features/forecast.jpg"),
             label: "Dịch vụ",
             onPress: () => {
-                // router.navigate('/repair-service')
+                router.navigate('/forecast')
             }
         },
     ]

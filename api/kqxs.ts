@@ -13,8 +13,15 @@ export interface IKqxs {
   ticketCodes: string;
 }
 
+export interface IForecast {
+  date: string;
+  title: string;
+  htmlContent: string;
+}
+
 const path = {
   kqxs: "/kqxs",
+  forecast: "/kqxs/du-doan"
 };
 
 const kqxs = async (date: string): Promise<IDataResponse<IKqxs>> => {
@@ -27,5 +34,14 @@ const kqxs = async (date: string): Promise<IDataResponse<IKqxs>> => {
   );
 };
 
-export { kqxs };
+const forecast = async (): Promise<IDataResponse<IForecast>> => {
+  return await rootApi<IForecast>(
+    {
+      url: path.forecast,
+      method: "get",
+    },
+  );
+};
+
+export { forecast, kqxs };
 

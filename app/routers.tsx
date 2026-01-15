@@ -43,6 +43,17 @@ function Routers() {
             />
 
             <Stack.Screen
+                name="forecast"
+                options={{
+                    title: 'Dự đoán kết quả',
+                    headerBackButtonDisplayMode: "minimal",
+                    contentStyle: {
+                        paddingBottom: bottomBarHeight
+                    }
+                }}
+            />
+
+            <Stack.Screen
                 name="note/note-form"
                 options={{
                     title: 'Ghi chú',
