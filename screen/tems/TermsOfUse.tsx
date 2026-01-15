@@ -11,20 +11,20 @@ function TermsOfUse() {
         <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
             <View style={styles.content}>
                 <TextUi style={styles.intro}>
-                    Chào mừng bạn đến với Ứng dụng SMAC. Vui lòng đọc kỹ các điều khoản sử dụng dưới đây trước khi sử dụng ứng dụng.
+                    Chào mừng bạn đến với Ứng dụng XSKT. Vui lòng đọc kỹ các điều khoản sử dụng dưới đây trước khi sử dụng ứng dụng.
                 </TextUi>
 
                 <View style={styles.section}>
                     <TitleUi>1. Chấp nhận điều khoản</TitleUi>
                     <TextUi style={styles.sectionContent}>
-                        Bằng việc cài đặt và sử dụng Ứng dụng SMAC, người dùng xác nhận đã đọc, hiểu và đồng ý tuân thủ các Điều khoản Sử dụng này.
+                        Bằng việc cài đặt và sử dụng Ứng dụng XSKT, người dùng xác nhận đã đọc, hiểu và đồng ý tuân thủ các Điều khoản Sử dụng này.
                     </TextUi>
                 </View>
 
                 <View style={styles.section}>
                     <TitleUi>2. Phạm vi sử dụng</TitleUi>
                     <TextUi style={styles.sectionContent}>
-                        Ứng dụng SMAC được cung cấp nhằm hỗ trợ các hoạt động quản lý và nghiệp vụ hợp pháp.
+                        Ứng dụng XSKT được cung cấp nhằm hỗ trợ các hoạt động quản lý và nghiệp vụ hợp pháp.
                     </TextUi>
                     <TextUi style={styles.sectionContent}>
                         Người dùng không được:
@@ -48,7 +48,7 @@ function TermsOfUse() {
                 <View style={styles.section}>
                     <TitleUi>4. Quyền sở hữu trí tuệ</TitleUi>
                     <TextUi style={styles.sectionContent}>
-                        Toàn bộ nội dung, dữ liệu, giao diện và mã nguồn của Ứng dụng SMAC thuộc quyền sở hữu của CCK hoặc các bên được ủy quyền hợp pháp.
+                        Toàn bộ nội dung, dữ liệu, giao diện và mã nguồn của Ứng dụng XSKT thuộc quyền sở hữu của CCK hoặc các bên được ủy quyền hợp pháp.
                     </TextUi>
                 </View>
 

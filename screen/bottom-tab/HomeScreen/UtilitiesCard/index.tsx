@@ -10,7 +10,7 @@ function UtilitiesCard() {
 
     const utilities = [
         {
-            icon: require("@/assets/images/features/dream_book.png"),
+            icon: require("@/assets/images/features/dream_book.jpg"),
             label: "Giải mã giấc mơ",
             onPress: () => {
                 router.navigate('/chat')

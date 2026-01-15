@@ -10,16 +10,16 @@ function PrivacyPolicy() {
     return (
         <ScrollView style={{flex: 1}} contentContainerStyle={[styles.root, {backgroundColor: color.bg}]}>
             <View style={styles.header}>
-                <TextUi style={styles.appName}>Ứng dụng SMAC</TextUi>
+                <TextUi style={styles.appName}>Ứng dụng XSKT</TextUi>
                 <TextUi style={styles.updateDate}>Cập nhật lần cuối: 17/12/2025</TextUi>
             </View>
 
             <TextUi style={styles.intro}>
-                Ứng dụng SMAC được phát triển và vận hành bởi CCK nhằm hỗ trợ các hoạt động quản lý và nghiệp vụ. Chính sách Quyền riêng tư này mô tả cách chúng tôi thu thập, sử dụng và bảo vệ thông tin của người dùng khi sử dụng Ứng dụng.
+                Ứng dụng XSKT được phát triển và vận hành bởi CCK nhằm hỗ trợ các hoạt động quản lý và nghiệp vụ. Chính sách Quyền riêng tư này mô tả cách chúng tôi thu thập, sử dụng và bảo vệ thông tin của người dùng khi sử dụng Ứng dụng.
             </TextUi>
 
             <TextUi style={styles.intro}>
-                Bằng việc cài đặt và sử dụng Ứng dụng SMAC, bạn xác nhận đã đọc, hiểu và đồng ý với nội dung của Chính sách Quyền riêng tư này.
+                Bằng việc cài đặt và sử dụng Ứng dụng XSKT, bạn xác nhận đã đọc, hiểu và đồng ý với nội dung của Chính sách Quyền riêng tư này.
             </TextUi>
 
             <View style={styles.section}>
@@ -93,7 +93,7 @@ function PrivacyPolicy() {
             <View style={styles.section}>
                 <TitleUi>6. Quyền riêng tư của trẻ em</TitleUi>
                 <TextUi style={styles.sectionContent}>
-                    Ứng dụng SMAC không hướng đến người dùng dưới 13 tuổi.
+                    Ứng dụng XSKT không hướng đến người dùng dưới 13 tuổi.
                 </TextUi>
                 <TextUi style={styles.sectionContent}>
                     Chúng tôi không cố ý thu thập dữ liệu cá nhân của trẻ em. Trong trường hợp phát hiện dữ liệu của trẻ em được thu thập ngoài ý muốn, chúng tôi sẽ tiến hành xóa bỏ kịp thời.
@@ -123,7 +123,7 @@ function PrivacyPolicy() {
 
             <View style={styles.footer}>
                 <TextUi style={styles.footerText}>
-                    Cảm ơn bạn đã tin tưởng và sử dụng Ứng dụng SMAC.
+                    Cảm ơn bạn đã tin tưởng và sử dụng Ứng dụng XSKT.
                 </TextUi>
             </View>
         </ScrollView>

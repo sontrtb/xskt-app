@@ -75,27 +75,6 @@ function Routers() {
                 }}
             />
 
-
-            <Stack.Protected guard={false}>
-                <Stack.Screen
-                    name="auth/login"
-                    options={{
-                        headerShown: false,
-                        contentStyle: {
-                            paddingBottom: bottomBarHeight
-                        }
-                    }} />
-                <Stack.Screen
-                    name="auth/register"
-                    options={{
-                        headerShown: false,
-                        contentStyle: {
-                            paddingBottom: bottomBarHeight
-                        }
-                    }}
-                />
-            </Stack.Protected>
-
             <Stack.Screen
                 name="tems/terms-of-use"
                 options={{

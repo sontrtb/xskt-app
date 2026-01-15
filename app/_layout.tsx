@@ -8,6 +8,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import mobileAds from 'react-native-google-mobile-ads';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import Toast from "react-native-toast-message";
 import Routers from "./routers";
@@ -36,6 +37,14 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  useEffect(() => {
+    mobileAds()
+      .initialize()
+      .then(adapterStatuses => {
+        console.log("Mobile Ads status:", adapterStatuses)
+      });
+  }, [])
+
   if (!loaded) {
     return null;
   }
@@ -43,14 +52,14 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView>
-          <KeyboardProvider>
-            <Routers />
-            <Toast
-              position="top"
-              visibilityTime={3000}
-            />
-            <ModalUpdate />
-          </KeyboardProvider>
+        <KeyboardProvider>
+          <Routers />
+          <Toast
+            position="top"
+            visibilityTime={3000}
+          />
+          <ModalUpdate />
+        </KeyboardProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>
   )

@@ -1,15 +1,19 @@
 import HeaderHome from "@/components/commons/HeaderHome";
+import ButtonUi from "@/components/ui/ButtonUi";
 import CardUi from "@/components/ui/CardUi";
 import Row from "@/components/ui/Row";
 import TextUi from "@/components/ui/TextUi";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
+import { adUnitInterstitialId } from "@/configs/admod";
 import useTheme from "@/hooks/useColor";
 import { toastSuccess } from "@/lib/toast";
 import { INote, useNotes } from "@/stores/useNotes";
 import { PADDING_PAGE } from "@/theme/layout";
 import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
+import { useEffect } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useInterstitialAd } from "react-native-google-mobile-ads";
 
 
 function NoteScreen() {
@@ -18,11 +22,29 @@ function NoteScreen() {
 
   const { notes, deleteNote } = useNotes();
 
+  const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitInterstitialId);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  useEffect(() => {
+    if (isClosed) {
+      router.push({
+        pathname: '/note/note-form',
+      })
+    }
+  }, [isClosed, router]);
+
   const sortedNotes = [...notes].sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
   const handleCreateNote = () => {
+    if (notes.length > 1 && isLoaded) {
+      show()
+      return;
+    }
     router.push({
       pathname: '/note/note-form',
     })
@@ -76,6 +98,10 @@ function NoteScreen() {
       <TextUi style={[styles.emptySubText, { color: color.textNeutral }]}>
         Nhấn nút bên dưới để tạo ghi chú đầu tiên
       </TextUi>
+      <ButtonUi
+        text="Tạo mới"
+        onPress={handleCreateNote}
+      />
     </View>
   );
 
@@ -85,7 +111,7 @@ function NoteScreen() {
         <TouchableOpacityUi onPress={handleCreateNote}>
           <Row>
             <Feather name="plus-circle" size={24} color="#fff" />
-            <TextUi style={{color: "#fff"}}>Tạo mới</TextUi>
+            <TextUi style={{ color: "#fff" }}>Tạo mới</TextUi>
           </Row>
         </TouchableOpacityUi>
       }
@@ -145,11 +171,11 @@ const styles = StyleSheet.create({
   emptyState: {
     alignItems: "center",
     paddingVertical: 40,
+    gap: 12
   },
   emptyText: {
     fontSize: 18,
     fontWeight: "600",
-    marginBottom: 8,
   },
   emptySubText: {
     fontSize: 14,

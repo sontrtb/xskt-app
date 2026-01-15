@@ -1,15 +1,16 @@
 import ButtonUi from "@/components/ui/ButtonUi";
 import CardUi from "@/components/ui/CardUi";
 import LoadingScreen from "@/components/ui/LoadingScreen";
-import SpaceUi from "@/components/ui/SpaceUi";
-import TextUi from "@/components/ui/TextUi";
+import { adUnitBannerId } from "@/configs/admod";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useRouter } from "expo-router";
 import moment from "moment";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { useRef, useState } from "react";
+import { Platform, ScrollView, StyleSheet } from "react-native";
+import { BannerAd, BannerAdSize, useForeground } from 'react-native-google-mobile-ads';
 import { WebView } from 'react-native-webview';
+
 
 function isBeforeOrToday(dateStr: string) {
     const inputDate = moment(dateStr, "DD/MM/YYYY");
@@ -20,12 +21,17 @@ function isBeforeOrToday(dateStr: string) {
 }
 
 function LiveResultScreen() {
+    const bannerRef = useRef<BannerAd>(null);
+
     const color = useColor()
     const router = useRouter()
 
     const [isLive, setIsLive] = useState(true)
     const [loading, setLoading] = useState(true);
 
+    useForeground(() => {
+        Platform.OS === 'ios' && bannerRef.current?.load();
+    });
 
     // JavaScript để inject CSS và lấy ngày
     const injectedJavaScript = `
@@ -117,10 +123,8 @@ function LiveResultScreen() {
 
     return (
         <LoadingScreen isLoading={loading}>
-            <View style={[styles.root, { backgroundColor: color.bg }]}>
-                <CardUi title={isLive ? "Trực tiếp..." : "Hiện tại chưa đến giờ quay số."}>
-                    <TextUi>{isLive ? "Kết quả xổ số hôm nay." : "Vui lòng quay lại sau 6 giờ 15 phút."}</TextUi>
-                    <SpaceUi height={PADDING_PAGE} />
+            <ScrollView contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
+                <CardUi title={isLive ? "Trực tiếp kết quả xổ số hôm nay" : "Hiện tại chưa đến giờ quay số."}>
                     <ButtonUi
                         type="outline"
                         text="Xem kết quả các ngày trước"
@@ -152,7 +156,8 @@ function LiveResultScreen() {
                         }}
                     />
                 </CardUi>
-            </View>
+                <BannerAd ref={bannerRef} unitId={adUnitBannerId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
+            </ScrollView>
         </LoadingScreen>
     )
 }
@@ -162,7 +167,8 @@ export default LiveResultScreen
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        padding: PADDING_PAGE,
+        paddingHorizontal: PADDING_PAGE,
+        paddingTop: PADDING_PAGE,
         gap: PADDING_PAGE
     },
     container: {
