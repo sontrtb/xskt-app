@@ -3,6 +3,7 @@ import CardUi from "@/components/ui/CardUi";
 import TitleUi from "@/components/ui/Title";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import useColor from "@/hooks/useColor";
+import { now } from "@/lib/date";
 import { PADDING_PAGE } from "@/theme/layout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
@@ -50,8 +51,7 @@ function ResultBox() {
         };
     });
 
-    const sixThirty = moment().hour(6).minute(45).second(0);
-    const now = moment();
+    const sixThirty = moment().hour(18).minute(45).second(0);
     const dateString = now.isBefore(sixThirty)
         ? moment().subtract(1, "day").format("DD-MM-YYYY")
         : moment().format("DD-MM-YYYY");

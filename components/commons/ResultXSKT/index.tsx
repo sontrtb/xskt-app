@@ -4,6 +4,7 @@ import DatePickerUi from "@/components/ui/DatePickerUi";
 import TextUi from "@/components/ui/TextUi";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import useColor from "@/hooks/useColor";
+import { now } from "@/lib/date";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
@@ -20,8 +21,7 @@ function ResultXSKT(props: ResultXSKTProps) {
 
   const color = useColor()
 
-  const sixThirty = moment().hour(6).minute(30).second(0);
-  const now = moment();
+  const sixThirty = moment().hour(18).minute(45).second(0);
   const dateStringInit = now.isBefore(sixThirty)
     ? moment().subtract(1, "day").format("DD-MM-YYYY")
     : moment().format("DD-MM-YYYY");
