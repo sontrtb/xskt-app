@@ -21,7 +21,7 @@ function ResultXSKT(props: ResultXSKTProps) {
 
   const color = useColor()
 
-  const sixThirty = moment().hour(18).minute(45).second(0);
+  const sixThirty = moment().hour(18).minute(40).second(0);
   const dateStringInit = now.isBefore(sixThirty)
     ? moment().subtract(1, "day").format("DD-MM-YYYY")
     : moment().format("DD-MM-YYYY");

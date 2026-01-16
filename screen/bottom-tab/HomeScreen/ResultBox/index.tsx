@@ -51,7 +51,7 @@ function ResultBox() {
         };
     });
 
-    const sixThirty = moment().hour(18).minute(45).second(0);
+    const sixThirty = moment().hour(18).minute(40).second(0);
     const dateString = now.isBefore(sixThirty)
         ? moment().subtract(1, "day").format("DD-MM-YYYY")
         : moment().format("DD-MM-YYYY");
