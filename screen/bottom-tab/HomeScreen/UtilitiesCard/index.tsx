@@ -10,33 +10,29 @@ function UtilitiesCard() {
 
     const utilities = [
         {
-            icon: require("@/assets/images/features/dream_book.jpg"),
-            label: "Giải mã giấc mơ",
+            label: "Giải mã\ngiấc mơ",
             onPress: () => {
                 router.navigate('/dream-book')
             }
         },
         {
-            icon: require("@/assets/images/features/forecast.jpg"),
-            label: "Dự đoán kết quả",
+            label: "Dự đoán\nkết quả",
             onPress: () => {
                 router.navigate('/forecast')
             }
         },
-        //  {
-        //     icon: require("@/assets/images/features/forecast.jpg"),
-        //     label: "Quay thử lấy may",
-        //     onPress: () => {
-        //         router.navigate('/forecast')
-        //     }
-        // },
-        //  {
-        //     icon: require("@/assets/images/features/forecast.jpg"),
-        //     label: "Dịch vụ",
-        //     onPress: () => {
-        //         router.navigate('/forecast')
-        //     }
-        // },
+         {
+            label: "Giải mã\ngiấc mơ",
+            onPress: () => {
+                router.navigate('/dream-book')
+            }
+        },
+        {
+            label: "Dự đoán\nkết quả",
+            onPress: () => {
+                router.navigate('/forecast')
+            }
+        },
     ]
 
     return (
