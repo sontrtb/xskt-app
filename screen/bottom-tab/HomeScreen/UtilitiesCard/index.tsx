@@ -22,9 +22,9 @@ function UtilitiesCard() {
             }
         },
          {
-            label: "Giải mã\ngiấc mơ",
+            label: "Quay thử",
             onPress: () => {
-                router.navigate('/dream-book')
+                router.navigate('/try-spinning')
             }
         },
         {

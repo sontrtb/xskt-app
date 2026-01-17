@@ -54,6 +54,17 @@ function Routers() {
             />
 
             <Stack.Screen
+                name="try-spinning"
+                options={{
+                    title: 'Quay thử',
+                    headerBackButtonDisplayMode: "minimal",
+                    contentStyle: {
+                        paddingBottom: bottomBarHeight
+                    }
+                }}
+            />
+
+            <Stack.Screen
                 name="dream-book"
                 options={{
                     title: 'Giải mã giấc mơ',
