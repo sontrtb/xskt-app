@@ -43,7 +43,7 @@ function TrySpinning() {
             numbers.push(newNumber);
 
             // Tạo chuỗi với số đã quay và số chưa quay (còn --)
-            const remaining = Array(count - i - 1).fill('--');
+            const remaining = Array(count - i - 1).fill('----');
             const currentDisplay = [...numbers, ...remaining].join(',');
 
             setData(prev => ({
@@ -95,7 +95,7 @@ function TrySpinning() {
 
         setIsSpinning(false);
     };
-    
+
     return (
         <View style={styles.root}>
             <CardUi title="Kết quả quay thử">
