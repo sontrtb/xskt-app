@@ -1,3 +1,4 @@
+import { toastCommingSoon } from "@/lib/toast";
 import Utility from "@/screen/bottom-tab/HomeScreen/UtilitiesCard/Utility";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useRouter } from "expo-router";
@@ -28,9 +29,10 @@ function UtilitiesCard() {
             }
         },
         {
-            label: "Dự đoán\nkết quả",
+            label: "Ngày giờ\nhoàng đạo",
             onPress: () => {
-                router.navigate('/forecast')
+                // router.navigate('/forecast')
+                toastCommingSoon()
             }
         },
     ]
@@ -39,7 +41,7 @@ function UtilitiesCard() {
         <View style={styles.root}>
             {
                 utilities.map((u, index) => (
-                    <Utility {...u} key={index} />
+                    <Utility {...u} key={index} index={index}/>
                 ))
             }
         </View>

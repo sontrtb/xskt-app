@@ -37,9 +37,9 @@ Tạo file credentials.json
 {
   "android": {
     "keystore": {
-      "keystorePath": "./bms-key.keystore",
+      "keystorePath": "./xskt.keystore",
       "keystorePassword": "******",
-      "keyAlias": "bms",
+      "keyAlias": "xskt",
       "keyPassword": "******"
     }
   }
@@ -48,4 +48,4 @@ Tạo file credentials.json
 
 npx expo prebuild
 
-eas build -p android --profile production --local# xskt-app
+eas build -p android --profile production --local

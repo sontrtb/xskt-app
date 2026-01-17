@@ -12,17 +12,51 @@ const widthItem = (windowWidth - PADDING_PAGE * 2 - 8) / 2
 interface UtilityProps {
     label: string;
     onPress?: () => void;
+    index: number;
 }
 
 function Utility(props: UtilityProps) {
     const color = useColor()
 
+    // Xác định hướng gradient dựa trên vị trí của item
+    const getGradientDirection = (index: number) => {
+        switch(index) {
+            case 0: // Top left - gradient từ trên trái xuống dưới phải (hướng về tâm)
+                return {
+                    start: { x: 0, y: 0 },
+                    end: { x: 1, y: 1 }
+                };
+            case 1: // Top right - gradient từ trên phải xuống dưới trái (hướng về tâm)
+                return {
+                    start: { x: 1, y: 0 },
+                    end: { x: 0, y: 1 }
+                };
+            case 2: // Bottom left - gradient từ dưới trái lên trên phải (hướng về tâm)
+                return {
+                    start: { x: 0, y: 1 },
+                    end: { x: 1, y: 0 }
+                };
+            case 3: // Bottom right - gradient từ dưới phải lên trên trái (hướng về tâm)
+                return {
+                    start: { x: 1, y: 1 },
+                    end: { x: 0, y: 0 }
+                };
+            default:
+                return {
+                    start: { x: 0, y: 0 },
+                    end: { x: 1, y: 1 }
+                };
+        }
+    }
+
+    const gradientDirection = getGradientDirection(props.index);
+
     return (
         <TouchableOpacityUi onPress={props.onPress}>
             <LinearGradient
                 colors={[color.primary, '#f16380', '#f5859c']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                start={gradientDirection.start}
+                end={gradientDirection.end}
                 style={[
                     styles.content
                 ]}
@@ -37,7 +71,7 @@ export default Utility
 
 const styles = StyleSheet.create({
     name: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: "500",
         textAlign: "center",
         color: "#ffffff"
