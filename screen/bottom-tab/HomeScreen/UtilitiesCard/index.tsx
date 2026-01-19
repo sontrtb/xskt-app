@@ -1,4 +1,3 @@
-import { toastCommingSoon } from "@/lib/toast";
 import Utility from "@/screen/bottom-tab/HomeScreen/UtilitiesCard/Utility";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useRouter } from "expo-router";
@@ -12,27 +11,34 @@ function UtilitiesCard() {
     const utilities = [
         {
             label: "Giải mã\ngiấc mơ",
+            icon: "moon",
+            iconLib: "Feather",
             onPress: () => {
                 router.navigate('/dream-book')
             }
         },
         {
             label: "Dự đoán\nkết quả",
+            icon: "crystal-ball",
+            iconLib: "MaterialCommunityIcons",
             onPress: () => {
                 router.navigate('/forecast')
             }
         },
          {
             label: "Quay thử",
+            icon: "refresh-cw",
+            iconLib: "Feather",
             onPress: () => {
                 router.navigate('/try-spinning')
             }
         },
         {
             label: "Ngày giờ\nhoàng đạo",
+            icon: "calendar-star",
+            iconLib: "MaterialCommunityIcons",
             onPress: () => {
-                // router.navigate('/forecast')
-                toastCommingSoon()
+                router.navigate('/lunar-calendar')
             }
         },
     ]
@@ -59,7 +65,6 @@ const styles = StyleSheet.create({
         width: windowWidth - PADDING_PAGE * 2,
         flexWrap: "wrap",
         marginTop: 70
-
     },
     avatar: {
         height: 60,

@@ -1,8 +1,9 @@
 import TextUi from "@/components/ui/TextUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import TouchableOpacityUi from "../../../../components/ui/TouchableOpacityUi";
 
 const windowWidth = Dimensions.get('window').width;
@@ -11,6 +12,8 @@ const widthItem = (windowWidth - PADDING_PAGE * 2 - 8) / 2
 
 interface UtilityProps {
     label: string;
+    icon?: string;
+    iconLib?: string;
     onPress?: () => void;
     index: number;
 }
@@ -51,6 +54,22 @@ function Utility(props: UtilityProps) {
 
     const gradientDirection = getGradientDirection(props.index);
 
+    const renderIcon = () => {
+        if (!props.icon) return null;
+
+        const iconProps = {
+            name: props.icon as any,
+            size: 32,
+            color: "#ffffff"
+        };
+
+        if (props.iconLib === 'MaterialCommunityIcons') {
+            return <MaterialCommunityIcons {...iconProps} />;
+        }
+        
+        return <Feather {...iconProps} />;
+    };
+
     return (
         <TouchableOpacityUi onPress={props.onPress}>
             <LinearGradient
@@ -61,6 +80,9 @@ function Utility(props: UtilityProps) {
                     styles.content
                 ]}
             >
+                <View style={styles.iconContainer}>
+                    {renderIcon()}
+                </View>
                 <TextUi style={styles.name}>{props.label}</TextUi>
             </LinearGradient>
         </TouchableOpacityUi>
@@ -71,10 +93,13 @@ export default Utility
 
 const styles = StyleSheet.create({
     name: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: "500",
         textAlign: "center",
         color: "#ffffff"
+    },
+    iconContainer: {
+        marginBottom: 8
     },
     content: {
         alignItems: "center",

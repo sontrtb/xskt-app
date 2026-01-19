@@ -54,6 +54,17 @@ function Routers() {
             />
 
             <Stack.Screen
+                name="lunar-calendar"
+                options={{
+                    title: 'Ngày giờ hoàng đạo',
+                    headerBackButtonDisplayMode: "minimal",
+                    contentStyle: {
+                        paddingBottom: bottomBarHeight
+                    }
+                }}
+            />
+
+            <Stack.Screen
                 name="try-spinning"
                 options={{
                     title: 'Quay thử',
