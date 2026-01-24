@@ -4,16 +4,16 @@ import CardUi from "@/components/ui/CardUi";
 import Row from "@/components/ui/Row";
 import TextUi from "@/components/ui/TextUi";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
-import { adUnitInterstitialId } from "@/configs/admod";
+// import { adUnitInterstitialId } from "@/configs/admod";
 import useTheme from "@/hooks/useColor";
 import { toastSuccess } from "@/lib/toast";
 import { INote, useNotes } from "@/stores/useNotes";
 import { PADDING_PAGE } from "@/theme/layout";
 import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useInterstitialAd } from "react-native-google-mobile-ads";
+// import { useInterstitialAd } from "react-native-google-mobile-ads";
 
 function NoteScreen() {
   const color = useTheme();
@@ -21,29 +21,29 @@ function NoteScreen() {
 
   const { notes, deleteNote } = useNotes();
 
-  const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitInterstitialId);
+  // const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitInterstitialId);
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  // useEffect(() => {
+  //   load();
+  // }, [load]);
 
-  useEffect(() => {
-    if (isClosed) {
-      router.push({
-        pathname: '/note/note-form',
-      })
-    }
-  }, [isClosed, router]);
+  // useEffect(() => {
+  //   if (isClosed) {
+  //     router.push({
+  //       pathname: '/note/note-form',
+  //     })
+  //   }
+  // }, [isClosed, router]);
 
   const sortedNotes = [...notes].sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
   const handleCreateNote = () => {
-    if (notes.length > 1 && isLoaded) {
-      show()
-      return;
-    }
+    // if (notes.length > 1 && isLoaded) {
+    //   show()
+    //   return;
+    // }
     router.push({
       pathname: '/note/note-form',
     })

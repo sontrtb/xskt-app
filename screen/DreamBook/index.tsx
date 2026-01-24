@@ -1,7 +1,7 @@
 import ButtonUi from "@/components/ui/ButtonUi";
 import TextInputUi from "@/components/ui/TextInputUi";
 import TextUi from "@/components/ui/TextUi";
-import { adUnitInterstitialId } from "@/configs/admod";
+// import { adUnitInterstitialId } from "@/configs/admod";
 import data from "@/configs/dream_book_data.json";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
@@ -13,7 +13,7 @@ import {
   View,
   VirtualizedList
 } from "react-native";
-import { useInterstitialAd } from "react-native-google-mobile-ads";
+// import { useInterstitialAd } from "react-native-google-mobile-ads";
 
 type DreamItem = {
   keyword: string;
@@ -31,23 +31,23 @@ function DreamBook() {
     });
   }, [])
 
-  const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitInterstitialId);
+  // const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitInterstitialId);
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  // useEffect(() => {
+  //   load();
+  // }, [load]);
 
-  useEffect(() => {
-    if (isClosed) {
-      router.navigate("/chat")
-    }
-  }, [isClosed, router]);
+  // useEffect(() => {
+  //   if (isClosed) {
+  //     router.navigate("/chat")
+  //   }
+  // }, [isClosed, router]);
 
   const goChat = () => {
-    if (isLoaded) {
-      show()
-      return;
-    }
+    // if (isLoaded) {
+    //   show()
+    //   return;
+    // }
     router.navigate("/chat")
   }
 
