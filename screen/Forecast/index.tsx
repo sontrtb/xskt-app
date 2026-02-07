@@ -6,13 +6,12 @@ import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import analytics from '@react-native-firebase/analytics';
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 
 function Forecast() {
     const color = useColor()
-
 
     useEffect(() => {
         analytics().logScreenView({
@@ -20,9 +19,17 @@ function Forecast() {
         });
     }, [])
 
+    const isInBlockedTime = useMemo(() => {
+        const now = new Date();
+        const currentHour = now.getHours();
+        // Từ 18h (18) đến 2h sáng (2)
+        return currentHour >= 18 || currentHour < 2;
+    }, []);
+
     const forecastQuery = useQuery({
         queryFn: forecast,
-        queryKey: ['forecast']
+        queryKey: ['forecast'],
+        enabled: !isInBlockedTime
     })
 
     // Inject CSS và JavaScript để vô hiệu hóa tất cả events và tùy chỉnh font
@@ -88,6 +95,14 @@ function Forecast() {
         `
         : "";
 
+    if (isInBlockedTime) {
+        return (
+            <CardUi title="Chưa có dự đoán" style={styles.rootNoData}>
+                <TextUi>{`Hệ thống hiện đang tính toán.\nKết quả sẽ có trong sáng ngày hôm sau.`}</TextUi>
+            </CardUi>
+        )
+    }
+
     return (
         <LoadingScreen isLoading={forecastQuery.isLoading}>
             <CardUi
@@ -109,7 +124,6 @@ function Forecast() {
                             <TextUi>Kết quả sẽ cập nhật vào 6 giờ sáng hàng ngày</TextUi>
                         </View>
                 }
-
             </CardUi>
         </LoadingScreen>
     )
@@ -120,6 +134,9 @@ export default Forecast
 const styles = StyleSheet.create({
     root: {
         flex: 1,
+        margin: PADDING_PAGE
+    },
+    rootNoData: {
         margin: PADDING_PAGE
     }
 })

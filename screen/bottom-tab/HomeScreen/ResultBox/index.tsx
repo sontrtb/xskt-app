@@ -84,7 +84,7 @@ function ResultBox() {
                             color="#FFD700"
                         />
                     </View>
-                    <Text style={[styles.luckyNumber, { color: color.primary }]}>{data?.specialPrize}</Text>
+                    <Text style={[styles.luckyNumber, { color: color.primary }]}>{data?.specialPrize ?? "-----"}</Text>
                 </View>
 
                 <View style={styles.liveWrap}>

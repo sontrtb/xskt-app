@@ -1,6 +1,7 @@
 import { kqxs } from "@/api/kqxs";
 import CardUi from "@/components/ui/CardUi";
 import DatePickerUi from "@/components/ui/DatePickerUi";
+import LoadingComponentUi from "@/components/ui/LoadingComponentUi";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
 import { now } from "@/lib/date";
 import { PADDING_PAGE } from "@/theme/layout";
@@ -34,23 +35,26 @@ function ResultXSKT(props: ResultXSKTProps) {
   const data = kqxsQuery.data?.data
 
   return (
+
     <TouchableOpacityUi onPress={onPress} activeOpacity={onPress ? 0.5 : 1}>
       <CardUi title="Kết quả" style={styles.root}>
         <DatePickerUi onChange={setDateString} value={dateString} disable={disable} />
-
-        <View style={styles.resultsContainer}>
-          <Prize title="Giải ĐB" numbers={data?.specialPrize} isSpecial />
-          <Prize title="Giải Nhất" numbers={data?.firstPrize} />
-          <Prize title="Giải Nhì" numbers={data?.secondPrize} />
-          <Prize title="Giải Ba" numbers={data?.thirdPrize} />
-          <Prize title="Giải Tư" numbers={data?.fourthPrize} />
-          <Prize title="Giải Năm" numbers={data?.fifthPrize} />
-          <Prize title="Giải Sáu" numbers={data?.sixthPrize} />
-          <Prize title="Giải Bảy" numbers={data?.seventhPrize} />
-          <Prize title="Mã đặc biệt" numbers={data?.ticketCodes} />
-        </View>
+        <LoadingComponentUi isLoading={kqxsQuery.isLoading}>
+          <View style={styles.resultsContainer}>
+            <Prize title="Giải ĐB" numbers={data?.specialPrize} isSpecial />
+            <Prize title="Giải Nhất" numbers={data?.firstPrize} />
+            <Prize title="Giải Nhì" numbers={data?.secondPrize} />
+            <Prize title="Giải Ba" numbers={data?.thirdPrize} />
+            <Prize title="Giải Tư" numbers={data?.fourthPrize} />
+            <Prize title="Giải Năm" numbers={data?.fifthPrize} />
+            <Prize title="Giải Sáu" numbers={data?.sixthPrize} />
+            <Prize title="Giải Bảy" numbers={data?.seventhPrize} />
+            <Prize title="Mã đặc biệt" numbers={data?.ticketCodes} />
+          </View>
+        </LoadingComponentUi>
       </CardUi>
     </TouchableOpacityUi>
+
   );
 }
 

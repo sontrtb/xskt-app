@@ -23,6 +23,7 @@ export interface AbsentPair {
 
 export interface KQXSStatistics {
   date: string;
+  createdAt: Date;
   topPairs3Days: PairFrequency[];
   topPairs7Days: PairFrequency[];
   consecutivePairs: ConsecutivePair[];

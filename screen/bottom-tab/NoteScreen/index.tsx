@@ -91,7 +91,7 @@ function NoteScreen() {
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
       <TextUi style={[styles.emptyText, { color: color.textNeutral }]}>
-        📝 Chưa có ghi chú nào
+        Chưa có ghi chú nào
       </TextUi>
       <TextUi style={[styles.emptySubText, { color: color.textNeutral }]}>
         Nhấn nút bên dưới để tạo ghi chú đầu tiên

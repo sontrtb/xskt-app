@@ -1,5 +1,7 @@
 import { statistical } from "@/api/statistical";
 import HeaderHome from "@/components/commons/HeaderHome";
+import TextUi from "@/components/ui/TextUi";
+import { dateTimeFormat } from "@/lib/date";
 import { PADDING_PAGE } from "@/theme/layout";
 import { useQuery } from "@tanstack/react-query";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
@@ -19,12 +21,14 @@ function StatisticalScreen() {
     <View style={styles.root}>
       <HeaderHome title="Thống kê" />
       <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+        <TextUi style={styles.noteText}>Dữ liệu cập nhật lúc {dateTimeFormat(data?.createdAt)}</TextUi>
+
         <TopPairs
           key={`top_pairs_${statisticalQuery.isLoading}`}
           data3={data?.topPairs3Days}
           data7={data?.topPairs7Days}
         />
-  
+
         <LongestAbsentPairs
           data={data?.longestAbsentPairs}
           key={`longest_absent_pairs_${statisticalQuery.isLoading}`}
@@ -51,29 +55,7 @@ const styles = StyleSheet.create({
     gap: PADDING_PAGE,
     paddingBottom: Platform.OS === "android" ? 130 : 20,
   },
-  chartContainer: {
-    padding: 16,
-    alignItems: 'center',
-  },
-  chartTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 20,
-    color: '#1e293b',
-    alignSelf: 'flex-start',
-  },
-  topLabel: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#1e293b',
-  },
-  yAxisText: {
-    fontSize: 11,
-    color: '#64748b',
-  },
-  xAxisText: {
-    fontSize: 11,
-    color: '#64748b',
-    fontWeight: '500',
-  },
+  noteText: {
+    fontStyle: 'italic',
+  }
 });

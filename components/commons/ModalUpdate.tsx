@@ -1,7 +1,9 @@
+import { getVersion } from "@/api/version"
 import useColor from "@/hooks/useColor"
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
-import { useState } from "react"
-import { Linking, View } from "react-native"
+import { useQuery } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
+import { Linking, Platform, View } from "react-native"
 import { checkVersion } from "react-native-check-version"
 import DeviceInfo from 'react-native-device-info'
 import Modal from "react-native-modal"
@@ -36,12 +38,17 @@ function ModalUpdate() {
 
     const version = DeviceInfo.getVersion();
 
-    // const getVersionQuery = useQuery({
-    //     queryKey: ["getVersion"],
-    //     queryFn: getVersion
-    // })
-    // const minVersionRequired = Platform.OS === "android" ? getVersionQuery.data?.data.androidVersion : getVersionQuery.data?.data.iosVersion
+    const getVersionQuery = useQuery({
+        queryKey: ["getVersion"],
+        queryFn: getVersion
+    })
+    const minVersionRequired = Platform.OS === "android" ? getVersionQuery.data?.data.android : getVersionQuery.data?.data.ios
 
+    useEffect(() => {
+        if (minVersionRequired) {
+            setOpen(!compareVersion(version, minVersionRequired.toString()))
+        }
+    }, [minVersionRequired, version])
 
     const onUpdate = async () => {
         const version = await checkVersion({
