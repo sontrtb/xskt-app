@@ -11,13 +11,14 @@ import TextInputUi from "./TextInputUi";
 import TouchableOpacityUi from "./TouchableOpacityUi";
 
 interface DatePickerUiProps {
-    onChange?: (date: string) => void;
+    onChange?: (date: string) => void
     value?: string
     disable?: boolean
+    maxDate?: string
 }
 
 function DatePickerUi(props: DatePickerUiProps) {
-    const { value, onChange, disable } = props;
+    const { value, onChange, disable, maxDate } = props;
 
     const valueConvert = value ? moment(value, "DD-MM-YYYY").format("YYYY-MM-DD") : undefined
 
@@ -107,7 +108,7 @@ function DatePickerUi(props: DatePickerUiProps) {
                         markedDates={dateString ? {
                             [dateString]: { selected: true, disableTouchEvent: true }
                         } : undefined}
-                        maxDate={moment().format('YYYY-MM-DD')}
+                        maxDate={maxDate}
                         theme={{
                             backgroundColor: 'transparent',
                             calendarBackground: 'transparent',

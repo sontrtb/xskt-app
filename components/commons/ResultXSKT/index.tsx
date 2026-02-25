@@ -38,7 +38,12 @@ function ResultXSKT(props: ResultXSKTProps) {
 
     <TouchableOpacityUi onPress={onPress} activeOpacity={onPress ? 0.5 : 1}>
       <CardUi title="Kết quả" style={styles.root}>
-        <DatePickerUi onChange={setDateString} value={dateString} disable={disable} />
+        <DatePickerUi
+          onChange={setDateString}
+          value={dateString}
+          disable={disable}
+          maxDate={moment().format('YYYY-MM-DD')}
+        />
         <LoadingComponentUi isLoading={kqxsQuery.isLoading}>
           <View style={styles.resultsContainer}>
             <Prize title="Giải ĐB" numbers={data?.specialPrize} isSpecial />

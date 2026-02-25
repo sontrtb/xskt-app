@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import ActivityIndicatorUi from "./ActivityIndicatorUi";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -14,7 +13,7 @@ function LoadingComponentUi(props: LoadingComponentUiProps) {
     const { children, isLoading } = props
     return (
         <View style={styles.root}>
-            <View style={{zIndex: 1}}>
+            {/* <View style={{zIndex: 1}}>
                 {children}
             </View>
             {
@@ -22,7 +21,8 @@ function LoadingComponentUi(props: LoadingComponentUiProps) {
                 <View style={styles.loadingWrap}>
                     <ActivityIndicatorUi />
                 </View>
-            }
+            } */}
+            {children}
         </View>
     )
 }

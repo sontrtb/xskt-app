@@ -12,10 +12,12 @@ import TopPairs from "./components/TopPairs";
 
 function StatisticalScreen() {
   const statisticalQuery = useQuery({
-    queryFn: statistical,
+    queryFn: async () => statistical(),
     queryKey: ["statistical"]
   })
   const data = statisticalQuery.data?.data
+
+  console.log("data", statisticalQuery)
 
   return (
     <View style={styles.root}>

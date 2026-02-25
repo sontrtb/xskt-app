@@ -30,7 +30,6 @@ export default function RootLayout() {
     "LexendDeca-Black": require("../assets/fonts/LexendDeca-Black.ttf"),
   });
 
-
   useEffect(() => {
     if (loaded) {
       SplashScreen.hide();
@@ -50,7 +49,7 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={new QueryClient()}>
       <GestureHandlerRootView>
         <KeyboardProvider>
           <Routers />
