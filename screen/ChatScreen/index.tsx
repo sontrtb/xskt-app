@@ -1,4 +1,5 @@
 import useColor from "@/hooks/useColor";
+import { PADDING_PAGE } from "@/theme/layout";
 import { EStatusChat, IChatIem } from "@/types/chat";
 import { useState } from "react";
 import { FlatList, Platform, StyleSheet } from "react-native";
@@ -54,6 +55,7 @@ export default ChatScreen
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    paddingBottom: PADDING_PAGE
   },
   flatList: {
     flex: 1,

@@ -1,20 +1,23 @@
 import ResultXSKT from "@/components/commons/ResultXSKT";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 function ResultScreen() {
 
     return (
-        <View style={styles.root}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.root}>
             <ResultXSKT />
-        </View>
+        </ScrollView>
     )
 }
 
 export default ResultScreen
 
 const styles = StyleSheet.create({
-    root: {
+    container: {
         flex: 1,
+    },
+    root: {
+        flexGrow: 1,
         justifyContent: "space-between"
     }
 })

@@ -124,7 +124,7 @@ function LiveResultScreen() {
 
     return (
         <LoadingScreen isLoading={loading}>
-            <ScrollView contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
+            <ScrollView style={styles.container} contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
                 <CardUi title={isLive ? "Trực tiếp kết quả xổ số hôm nay" : "Hiện tại chưa đến giờ quay số."}>
                     <ButtonUi
                         type="outline"
@@ -166,10 +166,11 @@ export default LiveResultScreen
 
 const styles = StyleSheet.create({
     root: {
-        flex: 1,
+        flexGrow: 1,
         paddingHorizontal: PADDING_PAGE,
         paddingTop: PADDING_PAGE,
-        gap: PADDING_PAGE
+        gap: PADDING_PAGE,
+        paddingBottom: PADDING_PAGE
     },
     container: {
         flex: 1,
