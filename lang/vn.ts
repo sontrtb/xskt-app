@@ -23,7 +23,7 @@ const langVn = {
     },
     rating: {
         title: "Bạn có thích ứng dụng?",
-        description: "Đánh giá 5 sao giúp chúng tôi cải thiện ứng dụng tốt hơn nhé!",
+        description: "Đánh giá 5 sao giúp chúng tôi cải thiện ứng dụng tốt hơn nhé!. Nếu có cần thêm tính năng xin để lại ở phần đánh giá app để đội ngũ chúng tôi hoàn thiện.",
         rateNow: "Đánh giá 5 sao",
         later: "Để sau"
     }
