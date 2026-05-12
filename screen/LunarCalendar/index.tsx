@@ -1,88 +1,111 @@
-import CardUi from "@/components/ui/CardUi";
-import DatePickerUi from "@/components/ui/DatePickerUi";
-import ImageUi from "@/components/ui/ImageUi";
-import Row from "@/components/ui/Row";
-import TextUi from "@/components/ui/TextUi";
-import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
-import useColor from "@/hooks/useColor";
-import { PADDING_PAGE } from "@/theme/layout";
-import { Ionicons } from "@expo/vector-icons";
-import { LunarDate } from "lunar-date-vi";
-import moment from "moment";
-import { useMemo, useState } from "react";
+import CardUi from '@/components/ui/CardUi';
+import DatePickerUi from '@/components/ui/DatePickerUi';
+import TextUi from '@/components/ui/TextUi';
+import useColor from '@/hooks/useColor';
+import { now } from '@/lib/date';
+import { PADDING_PAGE } from '@/theme/layout';
+import Feather from '@expo/vector-icons/Feather';
+import { SolarDate } from "@nghiavuive/lunar_date_vi";
+import moment from 'moment';
+import React, { useMemo, useState } from 'react';
 import {
     ImageBackground,
     ScrollView,
     StyleSheet,
-    View,
-} from "react-native";
+    TouchableOpacity,
+    View
+} from 'react-native';
 
 function LunarCalendar() {
     const color = useColor();
-    const [date, setDate] = useState(new Date());
 
-    const lunarDate = useMemo(() => new LunarDate(date), [date]);
+    const [currentDate, setCurrentDate] = useState(now);
 
-    const handlePrevDay = () => {
-        setDate(prev => moment(prev).subtract(1, 'days').toDate());
+    const getDayOfWeekVietnamese = () => {
+        const daysOfWeek = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+        return daysOfWeek[currentDate.day()];
     };
 
-    const handleNextDay = () => {
-        setDate(prev => moment(prev).add(1, 'days').toDate());
-    };
+    const lunarDate = useMemo(() => {
+        return new SolarDate(currentDate.toDate()).toLunarDate();
+    }, [currentDate])
 
-    const solarInfo = moment(date).format("DD-MM-YYYY");
-    const lunarInfo = `Ngày ${lunarDate.date}/${lunarDate.month}/${lunarDate.year} ${lunarDate.isLeap ? '(Nhuận)' : ''}`;
+    const navigateDate = (direction: number) => {
+        setCurrentDate(prevDate => prevDate.clone().add(direction, 'days'));
+    };
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
-            <CardUi title="Chọn ngày">
+            <View style={styles.fieldContainer}>
+                <TextUi style={styles.label}>Chọn ngày</TextUi>
                 <DatePickerUi
-                    value={moment(date).format("DD-MM-YYYY")}
-                    onChange={(val) => setDate(moment(val, "DD-MM-YYYY").toDate())}
+                    value={currentDate.format("DD-MM-YYYY")}
+                    onChange={date => setCurrentDate(moment(date, "DD-MM-YYYY"))}
                 />
-            </CardUi>
+            </View>
 
-            <CardUi style={{ marginTop: 16 }}>
-                <View style={styles.calendarContainer}>
-                    <TouchableOpacityUi onPress={handlePrevDay} style={styles.navButton}>
-                        <Ionicons name="chevron-back" size={32} color={color.primary} />
-                    </TouchableOpacityUi>
+            <TextUi style={styles.header}>
+                {getDayOfWeekVietnamese()}, {currentDate.format("DD-MM-YYYY")}
+            </TextUi>
 
-                    <ImageBackground
-                        source={require("@/assets/images/lunar-calendar/bg-day.png")}
-                        style={styles.imageGoldenCircle}
-                        imageStyle={{ borderRadius: 112 }}
-                    >
-                        <TextUi style={styles.lunarLabel}>{lunarDate.getYearName()}</TextUi>
-                        <TextUi weight="bold" style={styles.mainTextDay}>{lunarDate.date}</TextUi>
-                        <TextUi style={styles.textMonth}>Tháng {lunarDate.month}</TextUi>
-                    </ImageBackground>
+            <View style={styles.calendarContainer}>
+                <TouchableOpacity
+                    style={styles.navButton}
+                    onPress={() => navigateDate(-1)}
+                >
+                    <Feather name="arrow-left-circle" size={32} color={color.primary} />
+                </TouchableOpacity>
 
-                    <TouchableOpacityUi onPress={handleNextDay} style={styles.navButton}>
-                        <Ionicons name="chevron-forward" size={32} color={color.primary} />
-                    </TouchableOpacityUi>
-                </View>
+                <ImageBackground
+                    resizeMode="cover"
+                    style={styles.imageGoldenCircle}
+                    imageStyle={{ tintColor: color.primary }}
+                    source={require("@/assets/images/lunar-calendar/bg-day.png")}
+                >
+                    <TextUi style={styles.lunarLabel}>Âm lịch</TextUi>
+                    <TextUi style={styles.mainTextDay}>{lunarDate.get().day}</TextUi>
+                    <TextUi style={styles.textMonth}>Tháng {lunarDate.get().month}</TextUi>
+                </ImageBackground>
 
+                <TouchableOpacity
+                    style={styles.navButton}
+                    onPress={() => navigateDate(1)}
+                >
+                    <Feather name="arrow-right-circle" size={32} color={color.primary} />
+                </TouchableOpacity>
+            </View>
+
+            {/* Lunar Calendar Details */}
+            <CardUi title='Âm lịch'>
+                {/* Time Grid */}
                 <View style={styles.timeGrid}>
                     <View style={styles.timeItem}>
-                        <TextUi style={styles.timeLabel}>DƯƠNG LỊCH</TextUi>
-                        <TextUi style={styles.timeValue}>{moment(date).date()}</TextUi>
-                        <TextUi style={styles.timeSubtext}>Tháng {moment(date).month() + 1}</TextUi>
+                        <TextUi style={styles.timeLabel}>NGÀY</TextUi>
+                        <TextUi style={[styles.timeValue, { color: color.primary }]}>{lunarDate.get().day}</TextUi>
+                        <TextUi style={styles.timeSubtext}>Ngày {lunarDate.getDayName()}</TextUi>
                     </View>
-                    <View style={{ width: 1, backgroundColor: '#E5E7EB' }} />
+
                     <View style={styles.timeItem}>
-                        <TextUi style={styles.timeLabel}>TIẾT KHÍ</TextUi>
-                        <TextUi style={styles.timeValue}>{lunarDate.getSolarTerm()}</TextUi>
-                        <TextUi style={styles.timeSubtext}>{moment(date).year()}</TextUi>
+                        <TextUi style={styles.timeLabel}>THÁNG</TextUi>
+                        <TextUi style={[styles.timeValue, { color: color.primary }]}>{lunarDate.get().month}</TextUi>
+                        <TextUi style={styles.timeSubtext}>Tháng {lunarDate.getMonthName()}</TextUi>
+                    </View>
+
+                    <View style={styles.timeItem}>
+                        <TextUi style={styles.timeLabel}>NĂM</TextUi>
+                        <TextUi style={[styles.timeValue, { color: color.primary }]}>{lunarDate.get().year}</TextUi>
+                        <TextUi style={styles.timeSubtext}>Năm {lunarDate.getYearName()}</TextUi>
                     </View>
                 </View>
 
                 <View style={styles.infoSection}>
-                    <TextUi style={[styles.infoTitle, { color: color.primary }]}>NGÀY HÀNH ĐẠO</TextUi>
-                    <TextUi style={styles.infoText}>{lunarDate.getDayName()}</TextUi>
+                    <TextUi style={[styles.infoTitle, { color: color.primary }]}>Tiết khí</TextUi>
+                    <TextUi style={styles.infoText}>
+                        {lunarDate.getSolarTerm()}
+                    </TextUi>
                 </View>
 
+                {/* Auspicious Hours */}
                 <View style={styles.infoSection}>
                     <TextUi style={[styles.infoTitle, { color: color.primary }]}>GIỜ HOÀNG ĐẠO</TextUi>
                     <TextUi style={styles.infoText}>

@@ -1,13 +1,13 @@
+import TextUi from "@/components/ui/TextUi";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import { ScrollView, StyleSheet, View } from "react-native";
-import TextUi from "../ui/TextUi";
 
 const PrivacyPolicy = () => {
     const color = useColor();
 
     return (
-        <ScrollView style={{flex: 1}} contentContainerStyle={[styles.root, {backgroundColor: color.bg}]}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
             <View style={styles.content}>
                 <View style={styles.header}>
                     <TextUi style={styles.appName}>Chính Sách Bảo Mật XSKT</TextUi>

@@ -10,6 +10,7 @@ import moment from "moment";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Prize from "./Prize";
+import ResultHeadTail from "./ResultHeadTail";
 
 interface ResultXSKTProps {
   disable?: boolean;
@@ -57,6 +58,10 @@ function ResultXSKT(props: ResultXSKTProps) {
             <Prize title="Mã đặc biệt" numbers={data?.ticketCodes} />
           </View>
         </LoadingComponentUi>
+      </CardUi>
+
+      <CardUi title="Bảng loto miền Bắc" style={{ marginHorizontal: PADDING_PAGE }}>
+        <ResultHeadTail data={data} />
       </CardUi>
     </TouchableOpacityUi>
 
