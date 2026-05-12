@@ -22,6 +22,12 @@ const langEn = {
         lang: "Language",
         theme: "Theme",
         deleteAccount: "Delete Account"
+    },
+    rating: {
+        title: "Do you like the app?",
+        description: "A 5-star rating helps us improve the app better!",
+        rateNow: "Rate 5 stars",
+        later: "Later"
     }
 }
 

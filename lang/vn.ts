@@ -20,6 +20,12 @@ const langVn = {
         lang: 'Ngôn ngữ',
         theme: "Giao diện",
         deleteAccount: "Xóa tài khoản"
+    },
+    rating: {
+        title: "Bạn có thích ứng dụng?",
+        description: "Đánh giá 5 sao giúp chúng tôi cải thiện ứng dụng tốt hơn nhé!",
+        rateNow: "Đánh giá 5 sao",
+        later: "Để sau"
     }
 }
 

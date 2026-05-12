@@ -2,7 +2,7 @@
   "expo": {
     "name": "XSMB",
     "slug": "xskt",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "xskt",
@@ -31,7 +31,7 @@
       }
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 8,
       "googleServicesFile": "./google-services.json",
       "icon": "./assets/images/icon.png",
       "edgeToEdgeEnabled": true,
@@ -43,6 +43,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "react-native-rate-app",
       [
         "react-native-google-mobile-ads",
         {

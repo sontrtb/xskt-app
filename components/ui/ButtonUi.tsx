@@ -5,6 +5,7 @@ import TextUi from "./TextUi";
 
 interface ButtonUiProps {
     text: string;
+    textLang?: string;
     type?: "primary" | "outline";
     style?: StyleProp<ViewStyle>;
     onPress?: () => void;
@@ -15,6 +16,7 @@ interface ButtonUiProps {
 function ButtonUi(props: ButtonUiProps) {
     const {
         text,
+        textLang,
         type = "primary",
         style,
         onPress,
@@ -55,7 +57,16 @@ function ButtonUi(props: ButtonUiProps) {
             ]}
             onPress={onPress}
         >
-            {isLoading ? <ActivityIndicator size="small" color="#ffffff" /> : <TextUi style={{ color: colorBtn.textColor, fontWeight: "500" }}>{text}</TextUi>}
+            {isLoading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+                <TextUi 
+                    textLang={textLang} 
+                    style={{ color: colorBtn.textColor, fontWeight: "500" }}
+                >
+                    {text}
+                </TextUi>
+            )}
         </TouchableOpacity>
     )
 }

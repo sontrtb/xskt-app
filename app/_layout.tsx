@@ -1,5 +1,6 @@
-
 import ModalUpdate from '@/components/commons/ModalUpdate';
+import ModalReview from '@/components/commons/ModalReview';
+import { useAppReview } from '@/stores/useAppReview';
 import {
   QueryClient,
   QueryClientProvider
@@ -18,6 +19,8 @@ const queryClient = new QueryClient()
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const incLaunchCount = useAppReview((state) => state.incLaunchCount);
+
   const [loaded] = useFonts({
     "LexendDeca-Thin": require("../assets/fonts/LexendDeca-Thin.ttf"),
     "LexendDeca-ExtraLight": require("../assets/fonts/LexendDeca-ExtraLight.ttf"),
@@ -29,6 +32,10 @@ export default function RootLayout() {
     "LexendDeca-ExtraBold": require("../assets/fonts/LexendDeca-ExtraBold.ttf"),
     "LexendDeca-Black": require("../assets/fonts/LexendDeca-Black.ttf"),
   });
+
+  useEffect(() => {
+    incLaunchCount();
+  }, []);
 
   useEffect(() => {
     if (loaded) {
@@ -58,6 +65,7 @@ export default function RootLayout() {
             visibilityTime={3000}
           />
           <ModalUpdate />
+          <ModalReview />
         </KeyboardProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>
