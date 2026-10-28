@@ -1,8 +1,9 @@
 {
+  // lm viec di, lm thi k m suot ngay xsmb
   "expo": {
     "name": "XSMB",
     "slug": "xskt",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "xskt",
@@ -31,7 +32,7 @@
       }
     },
     "android": {
-      "versionCode": 8,
+      "versionCode": 10,
       "googleServicesFile": "./google-services.json",
       "icon": "./assets/images/icon.png",
       "edgeToEdgeEnabled": true,
