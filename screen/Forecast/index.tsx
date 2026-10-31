@@ -2,16 +2,20 @@ import { forecast } from "@/api/kqxs";
 import CardUi from "@/components/ui/CardUi";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import TextUi from "@/components/ui/TextUi";
+import { adUnitBannerId } from "@/configs/admod";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import analytics from '@react-native-firebase/analytics';
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
 
 function Forecast() {
     const color = useColor()
+    const insets = useSafeAreaInsets()
 
     useEffect(() => {
         analytics().logScreenView({
@@ -95,48 +99,91 @@ function Forecast() {
         `
         : "";
 
-    if (isInBlockedTime) {
+    const renderContent = () => {
+        if (isInBlockedTime) {
+            return (
+                <View style={styles.container}>
+                    <CardUi title="Chưa có dự đoán" style={styles.rootNoData}>
+                        <TextUi>{`Hệ thống hiện đang tính toán.\nKết quả sẽ có trong sáng ngày hôm sau.`}</TextUi>
+                    </CardUi>
+                </View>
+            )
+        }
+
         return (
-            <CardUi title="Chưa có dự đoán" style={styles.rootNoData}>
-                <TextUi>{`Hệ thống hiện đang tính toán.\nKết quả sẽ có trong sáng ngày hôm sau.`}</TextUi>
-            </CardUi>
+            <LoadingScreen isLoading={forecastQuery.isLoading}>
+                <CardUi
+                    style={styles.root}
+                    title={forecastQuery.data?.data.title}
+                >
+                    {
+                        forecastQuery.data?.data.htmlContent ?
+                            <WebView
+                                originWhitelist={['*']}
+                                source={{ html: injectedHTML }}
+                                javaScriptEnabled={true}
+                                scrollEnabled={true}
+                                showsVerticalScrollIndicator={false}
+                                showsHorizontalScrollIndicator={false}
+                            /> :
+                            <View>
+                                <TextUi weight="bold">Chưa có kết quả dự đoán.</TextUi>
+                                <TextUi>Kết quả sẽ cập nhật vào 6 giờ sáng hàng ngày</TextUi>
+                            </View>
+                    }
+                </CardUi>
+            </LoadingScreen>
         )
-    }
+    };
 
     return (
-        <LoadingScreen isLoading={forecastQuery.isLoading}>
-            <CardUi
-                style={styles.root}
-                title={forecastQuery.data?.data.title}
+        <View style={[styles.screenWrapper, { backgroundColor: color.bg }]}>
+            <View style={styles.contentContainer}>
+                {renderContent()}
+            </View>
+            <View
+                style={[
+                    styles.bannerContainer,
+                    {
+                        backgroundColor: color.bg,
+                        paddingBottom: Platform.OS === "ios" ? insets.bottom : 0,
+                    },
+                ]}
             >
-                {
-                    forecastQuery.data?.data.htmlContent ?
-                        <WebView
-                            originWhitelist={['*']}
-                            source={{ html: injectedHTML }}
-                            javaScriptEnabled={true}
-                            scrollEnabled={true}
-                            showsVerticalScrollIndicator={false}
-                            showsHorizontalScrollIndicator={false}
-                        /> :
-                        <View>
-                            <TextUi weight="bold">Chưa có kết quả dự đoán.</TextUi>
-                            <TextUi>Kết quả sẽ cập nhật vào 6 giờ sáng hàng ngày</TextUi>
-                        </View>
-                }
-            </CardUi>
-        </LoadingScreen>
+                <BannerAd
+                    unitId={adUnitBannerId}
+                    size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                    requestOptions={{
+                        requestNonPersonalizedAdsOnly: true,
+                    }}
+                />
+            </View>
+        </View>
     )
 }
 
 export default Forecast
 
 const styles = StyleSheet.create({
+    screenWrapper: {
+        flex: 1,
+    },
+    contentContainer: {
+        flex: 1,
+    },
+    container: {
+        flex: 1,
+    },
     root: {
         flex: 1,
         margin: PADDING_PAGE
     },
     rootNoData: {
         margin: PADDING_PAGE
-    }
+    },
+    bannerContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+    },
 })

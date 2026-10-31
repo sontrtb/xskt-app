@@ -1,11 +1,12 @@
 import ResultXSKT from "@/components/commons/ResultXSKT";
+import { PADDING_PAGE } from "@/theme/layout";
 import { ScrollView, StyleSheet } from "react-native";
 
 function ResultScreen() {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.root}>
-            <ResultXSKT />
+            <ResultXSKT showBanner />
         </ScrollView>
     )
 }
@@ -18,6 +19,8 @@ const styles = StyleSheet.create({
     },
     root: {
         flexGrow: 1,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        paddingBottom: PADDING_PAGE,
     }
 })
+

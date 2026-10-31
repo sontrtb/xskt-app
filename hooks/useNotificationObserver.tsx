@@ -2,15 +2,13 @@ import { requestNotiPermission } from '@/lib/permistions';
 import { toastSuccess } from '@/lib/toast';
 import { useCountNoti } from '@/stores/useCountNoti';
 import messaging from '@react-native-firebase/messaging';
-import { router } from 'expo-router';
 import { useEffect } from 'react';
 
 const handleOpenScreen = (data: { notificationId: number }) => {
-    router.push(`/notification/${data.notificationId}`)
 }
 
 export default function useNotificationObserver() {
-    const {increaseCount} = useCountNoti()
+    const { increaseCount } = useCountNoti()
 
     requestNotiPermission();
     //  App đang mở (foreground)

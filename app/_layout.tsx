@@ -1,5 +1,5 @@
-import ModalUpdate from '@/components/commons/ModalUpdate';
 import ModalReview from '@/components/commons/ModalReview';
+import ModalUpdate from '@/components/commons/ModalUpdate';
 import { useAppReview } from '@/stores/useAppReview';
 import {
   QueryClient,
@@ -56,7 +56,7 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView>
         <KeyboardProvider>
           <Routers />

@@ -24,9 +24,9 @@ export default function HomeScreen() {
       <WeatherBox />
       <ResultBox />
       <UtilitiesCard />
-      {/* <Banner /> */}
       <ResultXSKT
         disable
+        showBanner
         onPress={() => {
           router.push("/result")
         }}  
@@ -44,4 +44,5 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === "android" ? 130 : 20,
   },
 });
+
 

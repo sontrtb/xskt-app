@@ -1,13 +1,16 @@
 import ButtonUi from "@/components/ui/ButtonUi";
 import CardUi from "@/components/ui/CardUi";
 import LoadingScreen from "@/components/ui/LoadingScreen";
+import { adUnitBannerId } from "@/configs/admod";
 import useColor from "@/hooks/useColor";
 import { PADDING_PAGE } from "@/theme/layout";
 import analytics from '@react-native-firebase/analytics';
 import { useRouter } from "expo-router";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { WebView } from 'react-native-webview';
 
 
@@ -23,6 +26,7 @@ function LiveResultScreen() {
 
     const color = useColor()
     const router = useRouter()
+    const insets = useSafeAreaInsets()
 
     const [isLive, setIsLive] = useState(true)
     const [loading, setLoading] = useState(true);
@@ -124,40 +128,60 @@ function LiveResultScreen() {
 
     return (
         <LoadingScreen isLoading={loading}>
-            <ScrollView style={styles.container} contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
-                <CardUi title={isLive ? "Trực tiếp kết quả xổ số hôm nay" : "Hiện tại chưa đến giờ quay số."}>
-                    <ButtonUi
-                        type="outline"
-                        text="Xem kết quả các ngày trước"
-                        onPress={() => {
-                            router.push("/result")
-                        }}
-                    />
-                </CardUi>
+            <View style={[styles.screenWrapper, { backgroundColor: color.bg }]}>
+                <ScrollView style={styles.container} contentContainerStyle={[styles.root, { backgroundColor: color.bg }]}>
+                    <CardUi title={isLive ? "Trực tiếp kết quả xổ số hôm nay" : "Hiện tại chưa đến giờ quay số."}>
+                        <ButtonUi
+                            type="outline"
+                            text="Xem kết quả các ngày trước"
+                            onPress={() => {
+                                router.push("/result")
+                            }}
+                        />
+                    </CardUi>
 
-                <CardUi style={styles.container}>
-                    <WebView
-                        onLoadStart={() => setLoading(true)}
-                        onLoadEnd={() => setLoading(false)}
-                        style={[styles.container, { backgroundColor: color.bgCard }]}
-                        source={{ uri: 'https://xosothantai.mobi/embedded/kq-mienbac' }}
-                        injectedJavaScript={injectedJavaScript}
-                        onMessage={handleWebViewMessage}
-                        scrollEnabled={false}
-                        bounces={false}
-                        overScrollMode="never"
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                        onShouldStartLoadWithRequest={(request) => {
-                            if (request.url === 'https://xosothantai.mobi/embedded/kq-mienbac' ||
-                                request.url === 'about:blank') {
-                                return true;
-                            }
-                            return false;
+                    <CardUi style={styles.container}>
+                        <WebView
+                            onLoadStart={() => setLoading(true)}
+                            onLoadEnd={() => setLoading(false)}
+                            style={[styles.container, { backgroundColor: color.bgCard }]}
+                            source={{ uri: 'https://xosothantai.mobi/embedded/kq-mienbac' }}
+                            injectedJavaScript={injectedJavaScript}
+                            onMessage={handleWebViewMessage}
+                            scrollEnabled={false}
+                            bounces={false}
+                            overScrollMode="never"
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                            onShouldStartLoadWithRequest={(request) => {
+                                if (request.url === 'https://xosothantai.mobi/embedded/kq-mienbac' ||
+                                    request.url === 'about:blank') {
+                                    return true;
+                                }
+                                return false;
+                            }}
+                        />
+                    </CardUi>
+                </ScrollView>
+
+                <View
+                    style={[
+                        styles.bannerContainer,
+                        {
+                            backgroundColor: color.bg,
+                            paddingBottom: Platform.OS === "ios" ? insets.bottom : 0,
+                        },
+                    ]}
+                >
+                    <BannerAd
+                        unitId={adUnitBannerId}
+                        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
                         }}
                     />
-                </CardUi>
-            </ScrollView>
+                </View>
+            </View>
         </LoadingScreen>
     )
 }
@@ -165,6 +189,9 @@ function LiveResultScreen() {
 export default LiveResultScreen
 
 const styles = StyleSheet.create({
+    screenWrapper: {
+        flex: 1,
+    },
     root: {
         flexGrow: 1,
         paddingHorizontal: PADDING_PAGE,
@@ -174,5 +201,10 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+    },
+    bannerContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
     },
 })

@@ -2,6 +2,7 @@ import { kqxs } from "@/api/kqxs";
 import CardUi from "@/components/ui/CardUi";
 import TitleUi from "@/components/ui/Title";
 import TouchableOpacityUi from "@/components/ui/TouchableOpacityUi";
+import { adUnitInterstitialId } from "@/configs/admod";
 import useColor from "@/hooks/useColor";
 import { now } from "@/lib/date";
 import { PADDING_PAGE } from "@/theme/layout";
@@ -9,8 +10,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import moment from "moment";
-import { useEffect } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Dimensions, StyleSheet, Text, View } from "react-native";
+import { useInterstitialAd } from "react-native-google-mobile-ads";
 import Animated, {
     Easing,
     useAnimatedStyle,
@@ -27,6 +29,67 @@ function ResultBox() {
     const scale = useSharedValue(1);
 
     const router = useRouter()
+
+    const { isLoaded, isClosed, load, show, error } = useInterstitialAd(adUnitInterstitialId, {
+        requestNonPersonalizedAdsOnly: true,
+    });
+    const [isLoadingAd, setIsLoadingAd] = useState(false);
+    const hasRequestedRef = useRef(false);
+
+    useEffect(() => {
+        load();
+    }, [load]);
+
+    useEffect(() => {
+        if (isLoaded && hasRequestedRef.current && isLoadingAd) {
+            setIsLoadingAd(false);
+            show();
+        }
+    }, [isLoaded, isLoadingAd, show]);
+
+    useEffect(() => {
+        if (error && hasRequestedRef.current) {
+            setIsLoadingAd(false);
+            hasRequestedRef.current = false;
+            router.navigate("/live-result");
+        }
+    }, [error, router]);
+
+    useEffect(() => {
+        if (isClosed && hasRequestedRef.current) {
+            setIsLoadingAd(false);
+            hasRequestedRef.current = false;
+            router.navigate("/live-result");
+            load();
+        }
+    }, [isClosed, load, router]);
+
+    useEffect(() => {
+        let timer: any;
+        if (isLoadingAd) {
+            timer = setTimeout(() => {
+                if (hasRequestedRef.current) {
+                    setIsLoadingAd(false);
+                    hasRequestedRef.current = false;
+                    router.navigate("/live-result");
+                }
+            }, 3500);
+        }
+        return () => clearTimeout(timer);
+    }, [isLoadingAd, router]);
+
+    const handlePressLiveResult = () => {
+        if (isLoadingAd) return;
+
+        if (isLoaded) {
+            hasRequestedRef.current = true;
+            show();
+        } else {
+            setIsLoadingAd(true);
+            hasRequestedRef.current = true;
+            load();
+        }
+    };
 
     useEffect(() => {
         scale.value = withRepeat(
@@ -65,9 +128,8 @@ function ResultBox() {
     return (
         <TouchableOpacityUi
             style={styles.root}
-            onPress={() => {
-                router.navigate("/live-result")
-            }}
+            onPress={handlePressLiveResult}
+            disabled={isLoadingAd}
         >
             <CardUi style={[styles.content, { borderColor: color.primary }]}>
                 <View style={styles.result}>
@@ -89,9 +151,13 @@ function ResultBox() {
 
                 <View style={styles.liveWrap}>
                     <View style={styles.liveContainer}>
-                        <Animated.View
-                            style={[styles.redDot, animatedStyle]}
-                        />
+                        {isLoadingAd ? (
+                            <ActivityIndicator size="small" color="#ff4444" />
+                        ) : (
+                            <Animated.View
+                                style={[styles.redDot, animatedStyle]}
+                            />
+                        )}
                         <Text style={[styles.liveText]}>Kết quả{'\n'}trực tiếp</Text>
                     </View>
                 </View>
